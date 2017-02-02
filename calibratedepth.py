@@ -18,8 +18,8 @@ def callback(value):
 
 def setup_trackbars():
     cv2.namedWindow("Trackbars", 0)
-    cv2.createTrackbar("Known difference (mm)", "Trackbars", 0, 100)
-    cv2.createTrackbar("Known size (mm)", "Trackbars", 0, 100)
+    cv2.createTrackbar("Diff (mm)", "Trackbars", 0, 100, callback)
+    cv2.createTrackbar("Size (mm)", "Trackbars", 0, 100, callback)
 
 
 def ftoi_point(point):
@@ -42,6 +42,8 @@ def draw_marker(img, marker):
 
 
 def main():
+    setup_trackbars()
+
     g_finder = mk.MarkerFinder(mk.GREEN_COLOR_MIN, mk.GREEN_COLOR_MAX)
     v_finder = mk.MarkerFinder(mk.VIOLET_COLOR_MIN, mk.VIOLET_COLOR_MAX)
 
@@ -64,20 +66,27 @@ def main():
 
         # Draw centers and size
         if g_marker:
-            draw_marker(g_marker)
+            draw_marker(output, g_marker)
 
         if v_marker:
-            draw_marker(v_marker)
+            draw_marker(output, v_marker)
 
         # Find calculated focal length
         if g_marker and v_marker:
-            px_g = get_pixel_size(g_marker)
-            px_v = get_pixel_size(v_marker)
+            px1 = get_pixel_size(g_marker)
+            px2 = get_pixel_size(v_marker)
 
             # Get known distance/size
+            dD = cv2.getTrackbarPos("Diff (mm)", "Trackbars")
+            S = cv2.getTrackbarPos("Size (mm)", "Trackbars")
 
+            if S != 0:
+                # Compute focal length
+                F = dD * px1 * px2 / (S * abs(px1 - px2))
+                cv2.putText(output, 'F = %5.1d' % round(F, 1), (0, 30), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
 
-            f = dz * px1 * px2 / (D * abs(px1 - px2))
+        cv2.imshow("Output", output)
+        cv2.waitKey(1)
 
     cap.release()
 
