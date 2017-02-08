@@ -23,7 +23,12 @@ class MarkerFinder(object):
         self.COLOR_MAX = color_max
         self.ERROR_THRESH = error_thresh
 
-    def find_markers(self, img, output=None):
+    def find_markers(self, img, output=None, sort_by_size=True):
+        """
+        Returns a list of markers found in the image.
+        Marker structure is (contour, ellipse) where ellipse is ((x, y), (MA, ma), angle)
+        """
+
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)  # Convert to HSV (for color range)
         filt = cv2.inRange(hsv, self.COLOR_MIN, self.COLOR_MAX)
 
@@ -51,6 +56,7 @@ class MarkerFinder(object):
                 matches.append((c, e))
 
         # Sort by size
-        matches.sort(key=lambda x: ellipse_area(x[1]), reverse=True)
+        if sort_by_size:
+            matches.sort(key=lambda x: ellipse_area(x[1]), reverse=True)
 
         return matches
