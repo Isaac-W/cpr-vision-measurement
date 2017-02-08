@@ -1,25 +1,20 @@
+import math
 import cv2
 import markerfinder as mk
 
 """
-Given known distance between two markers, we can calculate the focal length f using the following:
+A/S -- adjust the known distance D (in)
+Z/X -- adjust the known size S (in)
+Space -- collect samples for F
 
+Given known distance between two markers, we can calculate the focal length f using the following:
 F = px * D / S  -- where d is pixel size, D is known distance, and S is known size
-F = dD * px1 * px2 / (S * abs(px1 - px2))  -- where px1 and px2 are pixel sizes, and dD is known difference in distance
 
 then we compute distance given a pixel size and known size and focal length:
-
 D = F * S / px
 """
 
-def callback(value):
-    pass
-
-
-def setup_trackbars():
-    cv2.namedWindow("Trackbars", 0)
-    cv2.createTrackbar("Diff (mm)", "Trackbars", 0, 100, callback)
-    cv2.createTrackbar("Size (mm)", "Trackbars", 0, 100, callback)
+TOTAL_SAMPLES = 100
 
 
 def ftoi_point(point):
@@ -38,15 +33,28 @@ def draw_marker(img, marker):
     cv2.circle(img, p, 2, (255, 0, 0), 2)
 
     cv2.putText(img, str(p), p, cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 0, 0), 2)
-    cv2.putText(img, 'd: ' + str(round(get_pixel_size(marker), 2)), (p[0], p[1] + 20), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 2)
+    cv2.putText(img, 'px: ' + str(round(get_pixel_size(marker), 2)), (p[0], p[1] + 20), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 2)
 
 
 def main():
-    setup_trackbars()
+    # Setup variables
+    px = 0.0
+    D = 0.0
+    S = 0.0
+    F = 0.0
 
-    g_finder = mk.MarkerFinder(mk.GREEN_COLOR_MIN, mk.GREEN_COLOR_MAX)
+    avg_px = None
+    avg_F = None
+
+    collecting_samples = False
+    samples = 0
+    sum_px = 0
+    sum_F = 0
+
+    # Init marker finder
     v_finder = mk.MarkerFinder(mk.VIOLET_COLOR_MIN, mk.VIOLET_COLOR_MAX)
 
+    # Open webcam
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
         return
@@ -58,35 +66,82 @@ def main():
 
         output = frame.copy()
 
-        green_matches = g_finder.find_markers(frame, output)
-        violet_matches = v_finder.find_markers(frame, output)
+        # Draw calibration target
+        h, w, _ = frame.shape
+        center = (w / 2, h / 2)
+        cv2.line(output, (center[0] - 5, center[1]), (center[0] + 5, center[1]), (0, 0, 255), 2)
+        cv2.line(output, (center[0], center[1] - 5), (center[0], center[1] + 5), (0, 0, 255), 2)
 
-        g_marker = green_matches[0] if len(green_matches) else None
+        # Find marker
+        violet_matches = v_finder.find_markers(frame, output)
+        violet_matches.sort(key=lambda x: math.sqrt(math.pow(x[1][0][0] - center[0], 2) + math.pow(x[1][0][1] - center[1], 2)))  # Get closest to center
         v_marker = violet_matches[0] if len(violet_matches) else None
 
         # Draw centers and size
-        if g_marker:
-            draw_marker(output, g_marker)
-
-        if v_marker:
-            draw_marker(output, v_marker)
+        for marker in violet_matches:
+            draw_marker(output, marker)
 
         # Find calculated focal length
-        if g_marker and v_marker:
-            px1 = get_pixel_size(g_marker)
-            px2 = get_pixel_size(v_marker)
-
-            # Get known distance/size
-            dD = cv2.getTrackbarPos("Diff (mm)", "Trackbars")
-            S = cv2.getTrackbarPos("Size (mm)", "Trackbars")
+        if v_marker:
+            px = get_pixel_size(v_marker)
 
             if S != 0:
                 # Compute focal length
-                F = dD * px1 * px2 / (S * abs(px1 - px2))
-                cv2.putText(output, 'F = %5.1d' % round(F, 1), (0, 30), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
+                F = px * D / S
 
+        # Display status text
+        cv2.putText(output, 'D = %5.2f' % D, (0, 60), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
+        cv2.putText(output, 'S = %5.2f' % S, (0, 90), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
+        cv2.putText(output, 'px = %5.3f' % px, (0, 30), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
+        cv2.putText(output, ' F = %5.3f' % F, (0, 120), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
+
+        # Collect samples
+        if collecting_samples:
+            cv2.putText(output, 'Collecting sample %d / %d' % (samples + 1, TOTAL_SAMPLES), (0, 180), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
+
+            samples += 1
+            sum_px += px
+            sum_F += F
+
+            if samples >= TOTAL_SAMPLES:
+                # Compute averages
+                avg_px = sum_px / float(samples)
+                avg_F = sum_F / float(samples)
+
+                collecting_samples = False
+
+        elif avg_px:
+            cv2.putText(output, 'Average px = %5.6f' % avg_px, (0, 180), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
+            cv2.putText(output, 'Average  F = %5.6f' % avg_F, (0, 210), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
+
+        # Show output image
         cv2.imshow("Output", output)
-        cv2.waitKey(1)
+
+        # Process keypresses
+        key = cv2.waitKey(1)
+        if key == 27:
+            break
+        elif key == 32:
+            if not collecting_samples:
+                # Start sampling focal length
+                collecting_samples = True
+                samples = 0
+                sum_px = 0
+                sum_F = 0
+        elif key == ord('a'):
+            D -= 0.25
+            if D < 0:
+                D = 0.0
+        elif key == ord('s'):
+            D += 0.25
+        elif key == ord('z'):
+            S -= 0.25
+            if S < 0:
+                S = 0.0
+        elif key == ord('x'):
+            S += 0.25
+
+
 
     cap.release()
 
