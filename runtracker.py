@@ -6,10 +6,8 @@ import imutils
 import markerfinder as mk
 
 
-#CALIB_COLOR_MIN = mk.VIOLET_COLOR_MIN
-#CALIB_COLOR_MAX = mk.VIOLET_COLOR_MAX
-TRACK_COLOR_MIN = mk.GREEN_COLOR_MIN
-TRACK_COLOR_MAX = mk.GREEN_COLOR_MAX
+TRACK_COLOR_MIN = mk.VIOLET_COLOR_MIN
+TRACK_COLOR_MAX = mk.VIOLET_COLOR_MAX
 
 
 origin_y = -1
@@ -18,6 +16,9 @@ origin_y = -1
 def mouse_callback(event, x, y, flags, param):
     global origin_y
 
+    if event == cv2.EVENT_LBUTTONDOWN:
+        # Set new origin_y
+        origin_y = y
 
 
 def ftoi_point(point):
@@ -36,17 +37,17 @@ def draw_marker(img, marker, size=None, distance=None, position=None):
     cv2.ellipse(img, e, (0, 255, 0), 2)
     cv2.circle(img, p, 2, (255, 0, 0), 2)
     # cv2.putText(output, 'C: ' + str(cv2.contourArea(c)) + ' | E: ' + str(mk.ellipse_area(e)), (int(e[0][0]), int(e[0][1])), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
-    cv2.putText(img, str(p), p, cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 0, 0), 2)
+    cv2.putText(img, str(p), (p[0] + 5, p[1]), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 0, 0), 2)
 
     # Print extra
     if size:
-        cv2.putText(img, 'Size: ' + str(round(size, 2)), (p[0], p[1] + 20), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 2)
+        cv2.putText(img, 'Size: ' + str(round(size, 2)), (p[0] + 5, p[1] + 20), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 2)
 
     if distance:
-        cv2.putText(img, 'Dist: ' + str(round(distance, 2)), (p[0], p[1] + 40), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 2)
+        cv2.putText(img, 'Dist: ' + str(round(distance, 2)), (p[0] + 5, p[1] + 40), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 2)
 
     if position:
-        cv2.putText(img, ' Pos: ' + str(round(position, 2)), (p[0], p[1] + 60), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 2)
+        cv2.putText(img, 'Pos: ' + str(round(position, 2)), (p[0] + 5, p[1] + 60), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 2)
 
 
 def main():
@@ -58,7 +59,6 @@ def main():
     F = float(sys.argv[2])
 
     # Create marker finders
-    #calib_finder = mk.MarkerFinder(CALIB_COLOR_MIN, CALIB_COLOR_MAX)
     track_finder = mk.MarkerFinder(TRACK_COLOR_MIN, TRACK_COLOR_MAX)
 
     # prevCalib = []
@@ -83,26 +83,13 @@ def main():
         # Make output image
         output = frame.copy()
 
-        # Draw center line (for calibration)
-        cv2.line(output, (center[0], 0), (center[0], h), (0, 0, 255), 2)
-
         # Draw calibrated origin
         if origin_y < 0:
             origin_y = center[1]  # Reset to center
 
-        #calib_matches = calib_finder.find_markers(frame, output)
-
-        # Get 2 best ellipses
-        #calib_markers = []
-        #for i in range(0, min(len(calib_matches), 2)):
-            #draw_marker(output, calib_matches[i])
-            #calib_markers.append(calib_matches[i][1][0])
-
-        # Get line between markers
-        #if len(calib_markers) == 2:
-            #p1 = ftoi_point(calib_markers[0])
-            #p2 = ftoi_point(calib_markers[1])
-            #cv2.line(output, p1, p2, (255, 0, 0), 2)
+        # Draw center line (for calibration)
+        cv2.line(output, (center[0], 0), (center[0], h), (0, 0, 255), 1)
+        cv2.line(output, (center[0] - 20, origin_y), (center[0] + 20, origin_y), (0, 0, 255), 1)
 
         # Find tracker (closest to last location or center line)
         track_matches = track_finder.find_markers(frame, output, False)
