@@ -3,13 +3,18 @@ import math
 import cv2
 import numpy as np
 import imutils
+from markerutils import *
 import markerfinder as mk
 from wristtracker import WristTracker
-from markerutils import *
+from cprstatus import CPRStatus
+from statussender import StatusSender
+from datalogger import DataLogger
 
 
 TRACK_COLOR_MIN = VIOLET_COLOR_MIN
 TRACK_COLOR_MAX = VIOLET_COLOR_MAX
+
+CPR_BUFFER_SIZE = 150  # 5 seconds (@ 30 fps)
 
 
 def draw_marker(img, marker, size=None, distance=None, position=None):
@@ -41,12 +46,17 @@ def main():
     S = float(sys.argv[1])
     F = float(sys.argv[2])
 
-    # Create marker finders
+    # Create instances
     track_finder = mk.MarkerFinder(TRACK_COLOR_MIN, TRACK_COLOR_MAX)
-
-    # Create wrist tracker
     tracker = WristTracker(track_finder, S, F)
 
+    cprstatus = CPRStatus(CPR_BUFFER_SIZE)
+    statussender = StatusSender()
+    datalog = DataLogger()
+
+    trainer_active = False
+
+    # Mouse callback for setting origin point
     def mouse_callback(event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONDOWN:
             # Set new origin_y
@@ -79,13 +89,34 @@ def main():
         if tracked_marker:
             draw_marker(output, tracked_marker.marker, tracked_marker.size, tracked_marker.distance, tracked_marker.position)
 
+        # Get CPR status
+        status = cprstatus.update(tracked_marker)
+
+        # Broadcast status
+        if status:
+            statussender.send_status(status)
+
+        # Log data
+        datalog.log()  # TODO
+
         # Show frame
         #cv2.imshow('Frame', frame)
         cv2.imshow('Output', output)
         cv2.setMouseCallback('Output', mouse_callback)
 
-        if cv2.waitKey(1) == 27:
+        # Process keypresses
+        k = cv2.waitKey(1)
+        if k == 27:
             break
+        elif k == 32:
+            # Toggle trainer on/off
+            trainer_active = not trainer_active
+
+            if trainer_active:
+                pass
+            else:
+                # Reset logger
+                pass
 
     cap.release()
 
