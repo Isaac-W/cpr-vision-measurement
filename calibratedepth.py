@@ -32,8 +32,8 @@ def draw_marker(img, marker):
     cv2.ellipse(img, e, (0, 255, 0), 2)
     cv2.circle(img, p, 2, (255, 0, 0), 2)
 
-    cv2.putText(img, str(p), p, cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 0, 0), 2)
-    cv2.putText(img, 'px: ' + str(round(get_pixel_size(marker), 2)), (p[0], p[1] + 20), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 2)
+    cv2.putText(img, str(p), (p[0] + 5, p[1]), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 0, 0), 2)
+    cv2.putText(img, 'px: ' + str(round(get_pixel_size(marker), 2)), (p[0] + 5, p[1] + 20), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 2)
 
 
 def main():
@@ -69,8 +69,8 @@ def main():
         # Draw calibration target
         h, w, _ = frame.shape
         center = (w / 2, h / 2)
-        cv2.line(output, (center[0] - 5, center[1]), (center[0] + 5, center[1]), (0, 0, 255), 2)
-        cv2.line(output, (center[0], center[1] - 5), (center[0], center[1] + 5), (0, 0, 255), 2)
+        cv2.line(output, (center[0] - 20, center[1]), (center[0] + 20, center[1]), (0, 0, 255), 1)
+        cv2.line(output, (center[0], center[1] - 20), (center[0], center[1] + 20), (0, 0, 255), 1)
 
         # Find marker
         violet_matches = v_finder.find_markers(frame, output)
@@ -93,7 +93,7 @@ def main():
         cv2.putText(output, 'D = %5.2f' % D, (0, 60), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
         cv2.putText(output, 'S = %5.2f' % S, (0, 90), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
         cv2.putText(output, 'px = %5.3f' % px, (0, 30), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
-        cv2.putText(output, ' F = %5.3f' % F, (0, 120), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
+        cv2.putText(output, 'F = %5.3f' % F, (0, 120), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
 
         # Collect samples
         if collecting_samples:
@@ -112,7 +112,7 @@ def main():
 
         elif avg_px:
             cv2.putText(output, 'Average px = %5.6f' % avg_px, (0, 180), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
-            cv2.putText(output, 'Average  F = %5.6f' % avg_F, (0, 210), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
+            cv2.putText(output, 'Average F = %5.6f' % avg_F, (0, 210), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
 
         # Show output image
         cv2.imshow("Output", output)
