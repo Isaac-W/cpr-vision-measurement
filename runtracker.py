@@ -4,29 +4,12 @@ import cv2
 import numpy as np
 import imutils
 import markerfinder as mk
+from wristtracker import WristTracker
+from markerutils import *
 
 
-TRACK_COLOR_MIN = mk.VIOLET_COLOR_MIN
-TRACK_COLOR_MAX = mk.VIOLET_COLOR_MAX
-
-
-origin_y = -1
-
-
-def mouse_callback(event, x, y, flags, param):
-    global origin_y
-
-    if event == cv2.EVENT_LBUTTONDOWN:
-        # Set new origin_y
-        origin_y = y
-
-
-def ftoi_point(point):
-    return int(point[0]), int(point[1])
-
-
-def get_ellipse_size(ellipse):
-    return max(ellipse[1][0], ellipse[1][1])
+TRACK_COLOR_MIN = VIOLET_COLOR_MIN
+TRACK_COLOR_MAX = VIOLET_COLOR_MAX
 
 
 def draw_marker(img, marker, size=None, distance=None, position=None):
@@ -61,9 +44,13 @@ def main():
     # Create marker finders
     track_finder = mk.MarkerFinder(TRACK_COLOR_MIN, TRACK_COLOR_MAX)
 
-    # prevCalib = []
-    prevTrack = None
-    global origin_y
+    # Create wrist tracker
+    tracker = WristTracker(track_finder, S, F)
+
+    def mouse_callback(event, x, y, flags, param):
+        if event == cv2.EVENT_LBUTTONDOWN:
+            # Set new origin_y
+            tracker.set_origin(y)
 
     # Open webcam
     cap = cv2.VideoCapture(0)
@@ -83,39 +70,14 @@ def main():
         # Make output image
         output = frame.copy()
 
-        # Draw calibrated origin
-        if origin_y < 0:
-            origin_y = center[1]  # Reset to center
-
-        # Draw center line (for calibration)
+        # Draw center and origin lines
         cv2.line(output, (center[0], 0), (center[0], h), (0, 0, 255), 1)
-        cv2.line(output, (center[0] - 20, origin_y), (center[0] + 20, origin_y), (0, 0, 255), 1)
+        cv2.line(output, (center[0] - 20, tracker.get_origin()), (center[0] + 20, tracker.get_origin()), (0, 0, 255), 1)
 
-        # Find tracker (closest to last location or center line)
-        track_matches = track_finder.find_markers(frame, output, False)
-        if prevTrack:
-            # Ellipse: ((x, y), (MA, ma), angle)
-            track_matches.sort(key=lambda x: math.sqrt(math.pow(x[1][0][0] - prevTrack[1][0][0], 2) + math.pow(x[1][0][1] - prevTrack[1][0][1], 2)))  # Get closest to center
-        else:
-            track_matches.sort(key=lambda x: x[1][0][0] - center[0])  # Get closest to center
-
-        # Get best ellipse
-        curTrack = None
-        if track_matches:
-            curTrack = track_matches[0]
-            prevTrack = curTrack
-
-        # Operate on prevTrack (retain last known position if no new marker found)
-        if prevTrack:
-            # Calculate distance
-            px = get_ellipse_size(prevTrack[1])
-            D = F * S / px
-
-            # Calculate position
-            y = prevTrack[1][0][1]
-            pos = (y - origin_y) * (S / px)
-
-            draw_marker(output, prevTrack, px, D, pos)
+        # Get tracked marker from image
+        tracked_marker = tracker.get_marker(frame, output)
+        if tracked_marker:
+            draw_marker(output, tracked_marker.marker, tracked_marker.size, tracked_marker.distance, tracked_marker.position)
 
         # Show frame
         #cv2.imshow('Frame', frame)

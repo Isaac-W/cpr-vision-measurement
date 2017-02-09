@@ -1,6 +1,7 @@
 import math
 import cv2
 import markerfinder as mk
+from markerutils import *
 
 """
 A/S -- adjust the known distance D (in)
@@ -15,14 +16,6 @@ D = F * S / px
 """
 
 TOTAL_SAMPLES = 100
-
-
-def ftoi_point(point):
-    return int(point[0]), int(point[1])
-
-
-def get_pixel_size(marker):
-    return max(marker[1][1][0], marker[1][1][1])
 
 
 def draw_marker(img, marker):
@@ -52,7 +45,7 @@ def main():
     sum_F = 0
 
     # Init marker finder
-    v_finder = mk.MarkerFinder(mk.VIOLET_COLOR_MIN, mk.VIOLET_COLOR_MAX)
+    v_finder = mk.MarkerFinder(VIOLET_COLOR_MIN, VIOLET_COLOR_MAX)
 
     # Open webcam
     cap = cv2.VideoCapture(0)
@@ -140,8 +133,6 @@ def main():
                 S = 0.0
         elif key == ord('x'):
             S += 0.25
-
-
 
     cap.release()
 
