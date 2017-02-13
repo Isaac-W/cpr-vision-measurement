@@ -17,6 +17,9 @@ class CPRStatus(object):
         self.BUFFER_SIZE = buffer_size
         self.data = []
 
+    def reset(self):
+        self.data = []
+
     def update(self, marker):
         if not marker:
             return None
@@ -38,19 +41,13 @@ class CPRStatus(object):
             x_vals = [x for x in range(0, len(self.data))]
 
             # Get peaks (for recoil)
-            peaks = peakutils.indexes(np.array(self.data), 0.5, 10)
+            peaks = peakutils.indexes(np.array(self.data), 0.2, 5)
             peaks = peaks.astype(int).tolist()
 
             # Get troughs (depth peaks)
             neg_data = [-x for x in self.data]
-            troughs = peakutils.indexes(np.array(neg_data), 0.5, 10)
+            troughs = peakutils.indexes(np.array(neg_data), 0.2, 5)
             troughs = troughs.astype(int).tolist()
-
-            # TODO Show plot
-            plt.plot(x_vals, self.data)
-            plt.plot(peaks, [self.data[x] for x in peaks], 'rx')
-            plt.plot(troughs, [self.data[x] for x in troughs], 'bx')
-            plt.show()
 
             # Analyze rate (use higher resolution trough points)
             try:
@@ -61,7 +58,7 @@ class CPRStatus(object):
             avg_rate = 0
             for i in range(1, len(rate_points)):
                 # Get time between peaks and convert to rate
-                avg_rate += FRAMERATE / float(rate_points[i] - rate_points[i - 1])
+                avg_rate += (FRAMES_PER_SEC * SEC_PER_MIN) / float(rate_points[i] - rate_points[i - 1])
             if len(rate_points) > 1:
                 avg_rate /= (len(rate_points) - 1)
 
@@ -75,7 +72,7 @@ class CPRStatus(object):
             # Analyze recoil (use magnitude of peaks)
             avg_recoil = 0
             for x in peaks:
-                avg_recoil += self.data[x]
+                avg_recoil += neg_data[x]
             if peaks:
                 avg_recoil /= len(peaks)
 
@@ -90,8 +87,15 @@ class CPRStatus(object):
                 code = STATUS_DEEP
             elif avg_depth < DEPTH_RANGE[0]:
                 code = STATUS_SHALLOW
-            elif avg_recoil > RECOIL_THRESH:
+            elif avg_recoil < RECOIL_THRESH:
                 code = STATUS_RECOIL
+
+            ''' Show plot
+            plt.plot(x_vals, self.data)
+            plt.plot(peaks, [self.data[x] for x in peaks], 'rx')
+            plt.plot(troughs, [self.data[x] for x in troughs], 'bx')
+            plt.show()
+            #'''
 
             # Clear buffer
             self.data = []

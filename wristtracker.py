@@ -49,7 +49,7 @@ class WristTracker(object):
 
             # Calculate position
             y = self.cur_track[1][0][1]
-            pos = (y - self.origin_y) * (self.S / px)
+            pos = (self.origin_y - y) * (self.S / px)
 
             return TrackedMarker(self.cur_track, px, D, pos)
 

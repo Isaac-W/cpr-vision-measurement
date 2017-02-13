@@ -1,10 +1,11 @@
 PI = 3.141592654
 
-FRAMERATE = 30
+FRAMES_PER_SEC = 15
+SEC_PER_MIN = 60
 
-RATE_RANGE = (100, 120)
-DEPTH_RANGE = (1.9, 2.5)  # 2 - 2.4 in (plus some error in measurement)
-RECOIL_THRESH = 0.1  # Allow for FULL chest recoil
+RATE_RANGE = (95, 125)  # 100 - 120 BPM (plus some error in measurement)
+DEPTH_RANGE = (1.85, 2.55)  # 2 - 2.4 in (plus some error in measurement)
+RECOIL_THRESH = 0.15  # Allow for FULL chest recoil
 
 
 # Color ranges

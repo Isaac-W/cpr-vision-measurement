@@ -6,5 +6,6 @@ A circle sticker of known size is placed on the person's wrist, facing the camer
 Dependencies
 ------------
 - OpenCV 3.2
-- numpy
-- peakutils
+- numpy 1.12.0
+- PeakUtils 1.0.3
+- (optional) matplotlib 2.0.0

@@ -1,17 +1,12 @@
 import sys
-import math
 from datetime import datetime
-
-import cv2
-import numpy as np
-import imutils
-from markerutils import *
 import markerfinder as mk
-from wristtracker import WristTracker
+import cv2
 from cprstatus import CPRStatus
-from statussender import StatusSender
 from datalogger import DataLogger
-
+from markerutils import *
+from statussender import StatusSender
+from wristtracker import WristTracker
 
 SOCK_ADDR = 'localhost'
 SOCK_PORT = 5123
@@ -151,6 +146,7 @@ def main():
                 cur_time = datetime.now()
                 time_str = cur_time.strftime('%m-%d-%y_%H%M%S')
                 datalog.start('CPR_' + time_str)
+                cprstatus.reset()
 
     cap.release()
 

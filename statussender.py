@@ -1,5 +1,6 @@
 import socket
 import struct
+from datetime import datetime
 
 
 class StatusSender(object):
@@ -21,4 +22,7 @@ class StatusSender(object):
         # Encode in string
         data = struct.pack('!i', status)
 
-        self.sock.sendto(data, (self.addr, self.port))
+        cur_time = datetime.now()
+        timestamp = cur_time.strftime('%m-%d-%y_%H:%M:%S')
+
+        self.sock.sendto(data + timestamp, (self.addr, self.port))
