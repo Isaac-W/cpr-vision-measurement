@@ -1,5 +1,7 @@
 import sys
 import math
+from datetime import datetime
+
 import cv2
 import numpy as np
 import imutils
@@ -11,9 +13,8 @@ from statussender import StatusSender
 from datalogger import DataLogger
 
 
-TRACK_COLOR_MIN = VIOLET_COLOR_MIN
-TRACK_COLOR_MAX = VIOLET_COLOR_MAX
-
+SOCK_ADDR = 'localhost'
+SOCK_PORT = 5123
 CPR_BUFFER_SIZE = 150  # 5 seconds (@ 30 fps)
 
 
@@ -46,16 +47,6 @@ def main():
     S = float(sys.argv[1])
     F = float(sys.argv[2])
 
-    # Create instances
-    track_finder = mk.MarkerFinder(TRACK_COLOR_MIN, TRACK_COLOR_MAX)
-    tracker = WristTracker(track_finder, S, F)
-
-    cprstatus = CPRStatus(CPR_BUFFER_SIZE)
-    statussender = StatusSender()
-    datalog = DataLogger()
-
-    trainer_active = False
-
     # Mouse callback for setting origin point
     def mouse_callback(event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONDOWN:
@@ -67,6 +58,19 @@ def main():
     if not cap.isOpened():
         return
 
+    # Get video parameters (try to retain same attributes for output video)
+    fps = float(cap.get(cv2.CAP_PROP_FPS))
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+    # Create instances
+    track_finder = mk.MarkerFinder(VIOLET_COLOR_MIN, VIOLET_COLOR_MAX)
+    tracker = WristTracker(track_finder, S, F)
+
+    cprstatus = CPRStatus(CPR_BUFFER_SIZE)
+    statussender = StatusSender(SOCK_ADDR, SOCK_PORT)
+    datalog = DataLogger(fps if (0 < fps <= 60) else 30, width, height)
+
     while True:
         # Get frame
         ret, frame = cap.read()
@@ -77,46 +81,76 @@ def main():
         h, w, _ = frame.shape
         center = (w / 2, h / 2)
 
+        '''
+        Output Drawing
+        '''
+
         # Make output image
         output = frame.copy()
+
+        # Display program status
+        cv2.putText(output, '<NOT RUNNING>' if not datalog.is_running() else 'RECORDING ' + datalog.get_filename() + ' [' + str(datalog.get_index()) + ']', (0, 30), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
 
         # Draw center and origin lines
         cv2.line(output, (center[0], 0), (center[0], h), (0, 0, 255), 1)
         cv2.line(output, (center[0] - 20, tracker.get_origin()), (center[0] + 20, tracker.get_origin()), (0, 0, 255), 1)
+
+        '''
+        Tracking
+        '''
 
         # Get tracked marker from image
         tracked_marker = tracker.get_marker(frame, output)
         if tracked_marker:
             draw_marker(output, tracked_marker.marker, tracked_marker.size, tracked_marker.distance, tracked_marker.position)
 
-        # Get CPR status
-        status = cprstatus.update(tracked_marker)
+        '''
+        Analysis
+        '''
 
-        # Broadcast status
-        if status:
-            statussender.send_status(status)
+        rate, depth, recoil, code = None, None, None, None
 
-        # Log data
-        datalog.log()  # TODO
+        if tracked_marker:
+            # Analyze CPR status
+            rate, depth, recoil, code = cprstatus.update(tracked_marker)
+
+        if datalog.is_running():
+            if code:
+                statussender.send_status(code)
+            datalog.log(frame, output, tracked_marker.position if tracked_marker else 0, rate, depth, recoil, code)
+
+        '''
+        Show Output
+        '''
 
         # Show frame
         #cv2.imshow('Frame', frame)
         cv2.imshow('Output', output)
         cv2.setMouseCallback('Output', mouse_callback)
 
-        # Process keypresses
+        '''
+        Process Keypresses
+        '''
+
         k = cv2.waitKey(1)
         if k == 27:
+            datalog.stop()
             break
+        elif k == ord('v'):
+            track_finder.set_color(VIOLET_COLOR_MIN, VIOLET_COLOR_MAX)
+        elif k == ord('g'):
+            track_finder.set_color(GREEN_COLOR_MIN, GREEN_COLOR_MAX)
+        elif k == ord('y'):
+            track_finder.set_color(YELLOW_COLOR_MIN, YELLOW_COLOR_MAX)
         elif k == 32:
-            # Toggle trainer on/off
-            trainer_active = not trainer_active
-
-            if trainer_active:
-                pass
+            # Toggle on/off
+            if datalog.is_running():
+                datalog.stop()
             else:
                 # Reset logger
-                pass
+                cur_time = datetime.now()
+                time_str = cur_time.strftime('%m-%d-%y_%H%M%S')
+                datalog.start('CPR_' + time_str)
 
     cap.release()
 

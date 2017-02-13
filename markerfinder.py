@@ -5,9 +5,13 @@ from markerutils import *
 
 class MarkerFinder(object):
     def __init__(self, color_min=(0, 0, 0), color_max=(255, 255, 255), error_thresh=0.1):
-        self.COLOR_MIN = color_min
-        self.COLOR_MAX = color_max
+        self.color_min = color_min
+        self.color_max = color_max
         self.ERROR_THRESH = error_thresh
+
+    def set_color(self, color_min, color_max):
+        self.color_min = color_min
+        self.color_max = color_max
 
     def find_markers(self, img, output=None, sort_by_size=False):
         """
@@ -16,7 +20,7 @@ class MarkerFinder(object):
         """
 
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)  # Convert to HSV (for color range)
-        filt = cv2.inRange(hsv, self.COLOR_MIN, self.COLOR_MAX)
+        filt = cv2.inRange(hsv, self.color_min, self.color_max)
 
         # Apply morphological filtering
         k_x = cv2.getGaussianKernel(5, 0)

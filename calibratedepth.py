@@ -83,9 +83,9 @@ def main():
                 F = px * D / S
 
         # Display status text
-        cv2.putText(output, 'D = %5.2f' % D, (0, 60), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
-        cv2.putText(output, 'S = %5.2f' % S, (0, 90), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
-        cv2.putText(output, 'px = %5.3f' % px, (0, 30), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
+        cv2.putText(output, 'D = %5.2f' % D, (0, 30), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
+        cv2.putText(output, 'S = %5.2f' % S, (0, 60), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
+        cv2.putText(output, 'px = %5.3f' % px, (0, 90), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
         cv2.putText(output, 'F = %5.3f' % F, (0, 120), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
 
         # Collect samples

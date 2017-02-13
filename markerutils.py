@@ -1,5 +1,12 @@
 PI = 3.141592654
 
+FRAMERATE = 30
+
+RATE_RANGE = (100, 120)
+DEPTH_RANGE = (1.9, 2.5)  # 2 - 2.4 in (plus some error in measurement)
+RECOIL_THRESH = 0.1  # Allow for FULL chest recoil
+
+
 # Color ranges
 GREEN_COLOR_MIN = (45, 91, 77)
 GREEN_COLOR_MAX = (61, 224, 255)
