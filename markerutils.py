@@ -1,6 +1,6 @@
 PI = 3.141592654
 
-FRAMES_PER_SEC = 15
+FRAMES_PER_SEC = 30
 SEC_PER_MIN = 60
 
 RATE_RANGE = (95, 125)  # 100 - 120 BPM (plus some error in measurement)

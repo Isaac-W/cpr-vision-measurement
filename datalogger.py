@@ -73,6 +73,10 @@ class DataLogger(object):
         out_string = '\t'.join(map(str, vals))
         self.datafile.write(out_string + '\n')
 
+        # Resize frames
+        raw = cv2.resize(raw, (self.width, self.height))
+        img = cv2.resize(img, (self.width, self.height))
+
         # Write videos
         self.raw_vid.write(raw)
         self.out_vid.write(img)

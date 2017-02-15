@@ -12,6 +12,9 @@ SOCK_ADDR = 'localhost'
 SOCK_PORT = 5123
 CPR_BUFFER_SIZE = 150  # 5 seconds (@ 30 fps)
 
+OUT_WIDTH = 960
+OUT_HEIGHT = 540
+
 
 def draw_marker(img, marker, size=None, distance=None, position=None):
     c = marker[0]
@@ -50,13 +53,13 @@ def main():
 
     # Open webcam
     cap = cv2.VideoCapture(0)
+    cv2.waitKey(1000)
+
     if not cap.isOpened():
         return
 
     # Get video parameters (try to retain same attributes for output video)
     fps = float(cap.get(cv2.CAP_PROP_FPS))
-    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
     # Create instances
     track_finder = mk.MarkerFinder(VIOLET_COLOR_MIN, VIOLET_COLOR_MAX)
@@ -64,7 +67,9 @@ def main():
 
     cprstatus = CPRStatus(CPR_BUFFER_SIZE)
     statussender = StatusSender(SOCK_ADDR, SOCK_PORT)
-    datalog = DataLogger(fps if (0 < fps <= 60) else 30, width, height)
+    datalog = DataLogger(fps if (0 < fps <= 60) else 30, OUT_WIDTH, OUT_HEIGHT)
+
+    last_rate, last_depth, last_recoil, last_code = 0, 0, 0, 0
 
     while True:
         # Get frame
@@ -85,6 +90,7 @@ def main():
 
         # Display program status
         cv2.putText(output, '<NOT RUNNING>' if not datalog.is_running() else 'RECORDING ' + datalog.get_filename() + ' [' + str(datalog.get_index()) + ']', (0, 30), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
+        cv2.putText(output, '<NOT RUNNING>' if not datalog.is_running() else 'RECORDING ' + datalog.get_filename() + ' [' + str(datalog.get_index()) + ']', (0, 60), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
 
         # Draw center and origin lines
         cv2.line(output, (center[0], 0), (center[0], h), (0, 0, 255), 1)
@@ -108,6 +114,7 @@ def main():
         if tracked_marker:
             # Analyze CPR status
             rate, depth, recoil, code = cprstatus.update(tracked_marker)
+            last_rate, last_depth, last_recoil, last_code = rate, depth, recoil, code  # Update
 
         if datalog.is_running():
             if code:
@@ -117,6 +124,9 @@ def main():
         '''
         Show Output
         '''
+
+        # Resize frame
+        output = cv2.resize(output, (OUT_WIDTH, OUT_HEIGHT))
 
         # Show frame
         #cv2.imshow('Frame', frame)
