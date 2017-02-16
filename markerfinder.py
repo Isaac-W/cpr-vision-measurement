@@ -32,7 +32,7 @@ class MarkerFinder(object):
         # Find contours
         _, contours, _ = cv2.findContours(filt, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
         if not output is None:
-            cv2.drawContours(output, contours, -1, (0, 0, 255), 3)
+            cv2.drawContours(output, contours, -1, (0, 0, 255), 1)
 
         matches = []  # Contours that match a marker
 

@@ -36,7 +36,7 @@ class DataLogger(object):
             # Create new data and video files
             self.filename = filename
             self.datafile = open(path.join(self.save_location, filename + '.tsv'), 'w')
-            self.datafile.write('Index\tTime\tPosition\tRate\tDepth\tRecoil\tStatus\n')
+            self.datafile.write('Index\tTime\tOrigin\tPosition\tRate\tDepth\tRecoil\tStatus\n')
 
             fourcc = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
             self.raw_vid = cv2.VideoWriter(path.join(self.save_location, filename + '_raw.mp4'), fourcc, self.fps, (self.width, self.height))
@@ -59,7 +59,7 @@ class DataLogger(object):
 
         self.running = False
 
-    def log(self, raw, img, position, rate, depth, recoil, status):
+    def log(self, raw, img, origin, position, rate, depth, recoil, status):
         if not self.running:
             return
 
@@ -68,7 +68,7 @@ class DataLogger(object):
         timestamp = cur_time.strftime('%m-%d-%y_%H:%M:%S')
 
         # Write status
-        vals = [self.index, timestamp, position,
+        vals = [self.index, timestamp, origin, position,
                 rate if rate else '',
                 depth if depth else '',
                 recoil if recoil else '',

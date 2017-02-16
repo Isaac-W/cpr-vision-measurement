@@ -85,14 +85,14 @@ class CPRStatus(object):
             # Determine status code to send
             code = STATUS_GOOD
 
-            if avg_rate > RATE_RANGE[1]:
-                code = STATUS_FAST
-            elif avg_rate < RATE_RANGE[0]:
-                code = STATUS_SLOW
-            elif avg_depth > DEPTH_RANGE[1]:
+            if avg_depth > DEPTH_RANGE[1]:
                 code = STATUS_DEEP
             elif avg_depth < DEPTH_RANGE[0]:
                 code = STATUS_SHALLOW
+            elif avg_rate > RATE_RANGE[1]:
+                code = STATUS_FAST
+            elif avg_rate < RATE_RANGE[0]:
+                code = STATUS_SLOW
             elif avg_recoil > RECOIL_THRESH:
                 code = STATUS_RECOIL
 

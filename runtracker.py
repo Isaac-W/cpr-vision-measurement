@@ -21,7 +21,7 @@ def draw_marker(img, marker, size=None, distance=None, position=None):
     e = marker[1]
     p = ftoi_point(e[0])
 
-    cv2.ellipse(img, e, (0, 255, 0), 2)
+    cv2.ellipse(img, e, (0, 255, 0), 1)
     cv2.circle(img, p, 2, (255, 0, 0), 2)
     # cv2.putText(output, 'C: ' + str(cv2.contourArea(c)) + ' | E: ' + str(mk.ellipse_area(e)), (int(e[0][0]), int(e[0][1])), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 2)
     cv2.putText(img, str(p), (p[0] + 5, p[1]), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 2)
@@ -73,8 +73,9 @@ def main():
     fps = float(cap.get(cv2.CAP_PROP_FPS))
 
     # Create instances
-    track_finder = mk.MarkerFinder(VIOLET_COLOR_MIN, VIOLET_COLOR_MAX)
+    track_finder = mk.MarkerFinder(GREEN_COLOR_MIN, GREEN_COLOR_MAX)
     tracker = WristTracker(track_finder, S, F)
+    tracker.set_origin(int(height / 2))
 
     cprstatus = CPRStatus(CPR_BUFFER_SIZE)
     statussender = StatusSender(SOCK_ADDR, SOCK_PORT)
@@ -131,7 +132,7 @@ def main():
 
                     statussender.send_status(code)
 
-                datalog.log(frame, output, tracked_marker.position if tracked_marker else 0, rate, depth, recoil, code)
+                datalog.log(frame, output, tracker.get_origin(), tracked_marker.position if tracked_marker else 0, rate, depth, recoil, code)
 
         '''
         Show Output
