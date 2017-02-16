@@ -15,7 +15,7 @@ class StatusSender(object):
         self.sock = None
 
     def send_status(self, status):
-        if not status:
+        if status is None:
             return
 
         # Encode in string

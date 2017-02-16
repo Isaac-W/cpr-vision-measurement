@@ -23,8 +23,8 @@ def draw_marker(img, marker, size=None, distance=None, position=None):
 
     cv2.ellipse(img, e, (0, 255, 0), 2)
     cv2.circle(img, p, 2, (255, 0, 0), 2)
-    # cv2.putText(output, 'C: ' + str(cv2.contourArea(c)) + ' | E: ' + str(mk.ellipse_area(e)), (int(e[0][0]), int(e[0][1])), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
-    cv2.putText(img, str(p), (p[0] + 5, p[1]), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 0, 0), 2)
+    # cv2.putText(output, 'C: ' + str(cv2.contourArea(c)) + ' | E: ' + str(mk.ellipse_area(e)), (int(e[0][0]), int(e[0][1])), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 2)
+    cv2.putText(img, str(p), (p[0] + 5, p[1]), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 2)
 
     # Print extra
     if size:
@@ -39,26 +39,37 @@ def draw_marker(img, marker, size=None, distance=None, position=None):
 
 def main():
     if len(sys.argv) < 3:
-        print 'USAGE: runtracker.py marker_size focal_length'
+        print 'USAGE: runtracker.py marker_size participant_id [save_location]'
         return
 
     S = float(sys.argv[1])
-    F = float(sys.argv[2])
+    F = 1
+
+    participant_id = sys.argv[2]
+
+    save_location = '.'
+    if len(sys.argv) >= 4:
+        save_location = sys.argv[3]
 
     # Mouse callback for setting origin point
     def mouse_callback(event, x, y, flags, param):
+        if datalog.is_running():
+            return
+
         if event == cv2.EVENT_LBUTTONDOWN:
             # Set new origin_y
             tracker.set_origin(y)
 
     # Open webcam
     cap = cv2.VideoCapture(0)
-    cv2.waitKey(1000)
 
     if not cap.isOpened():
+        print 'Error opening camera!'
         return
 
     # Get video parameters (try to retain same attributes for output video)
+    width = float(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = float(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fps = float(cap.get(cv2.CAP_PROP_FPS))
 
     # Create instances
@@ -67,7 +78,7 @@ def main():
 
     cprstatus = CPRStatus(CPR_BUFFER_SIZE)
     statussender = StatusSender(SOCK_ADDR, SOCK_PORT)
-    datalog = DataLogger(fps if (0 < fps <= 60) else 30, OUT_WIDTH, OUT_HEIGHT)
+    datalog = DataLogger(fps if (0 < fps <= 60) else 30, width, height, save_location)
 
     last_rate, last_depth, last_recoil, last_code = 0, 0, 0, 0
 
@@ -90,7 +101,7 @@ def main():
 
         # Display program status
         cv2.putText(output, '<NOT RUNNING>' if not datalog.is_running() else 'RECORDING ' + datalog.get_filename() + ' [' + str(datalog.get_index()) + ']', (0, 30), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
-        cv2.putText(output, '<NOT RUNNING>' if not datalog.is_running() else 'RECORDING ' + datalog.get_filename() + ' [' + str(datalog.get_index()) + ']', (0, 60), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+        cv2.putText(output, 'R: ' + str(last_rate) + ' D: ' + str(last_depth) + ' C: ' + str(last_recoil) + ' S: ' + str(last_code), (0, 60), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 2)
 
         # Draw center and origin lines
         cv2.line(output, (center[0], 0), (center[0], h), (0, 0, 255), 1)
@@ -109,24 +120,25 @@ def main():
         Analysis
         '''
 
-        rate, depth, recoil, code = None, None, None, None
-
-        if tracked_marker:
-            # Analyze CPR status
-            rate, depth, recoil, code = cprstatus.update(tracked_marker)
-            last_rate, last_depth, last_recoil, last_code = rate, depth, recoil, code  # Update
-
         if datalog.is_running():
-            if code:
-                statussender.send_status(code)
-            datalog.log(frame, output, tracked_marker.position if tracked_marker else 0, rate, depth, recoil, code)
+            if tracked_marker:
+                # Analyze CPR status
+                rate, depth, recoil, code = cprstatus.update(tracked_marker)
+
+                if code is not None:
+                    last_rate, last_depth, last_recoil, last_code = rate, depth, recoil, code  # Update
+                    print 'R: ' + str(last_rate) + ' D: ' + str(last_depth) + ' C: ' + str(last_recoil) + ' S: ' + str(last_code)
+
+                    statussender.send_status(code)
+
+                datalog.log(frame, output, tracked_marker.position if tracked_marker else 0, rate, depth, recoil, code)
 
         '''
         Show Output
         '''
 
         # Resize frame
-        output = cv2.resize(output, (OUT_WIDTH, OUT_HEIGHT))
+        #output = cv2.resize(output, (OUT_WIDTH, OUT_HEIGHT))
 
         # Show frame
         #cv2.imshow('Frame', frame)
@@ -155,7 +167,7 @@ def main():
                 # Reset logger
                 cur_time = datetime.now()
                 time_str = cur_time.strftime('%m-%d-%y_%H%M%S')
-                datalog.start('CPR_' + time_str)
+                datalog.start('CPR_' + str(participant_id) + '_' + time_str)
                 cprstatus.reset()
 
     cap.release()

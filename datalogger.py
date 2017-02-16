@@ -1,13 +1,15 @@
 from datetime import datetime
-
 import cv2
+from os import path
 
 
 class DataLogger(object):
-    def __init__(self, fps=30, width=1920, height=1080):
+    def __init__(self, fps=30, width=1920, height=1080, save_location='.'):
         self.fps = fps
-        self.width = width
-        self.height = height
+        self.width = int(width)
+        self.height = int(height)
+
+        self.save_location = save_location
 
         self.running = False
         self.index = 0
@@ -33,17 +35,18 @@ class DataLogger(object):
         try:
             # Create new data and video files
             self.filename = filename
-            self.datafile = open(filename + '.tsv', 'w')
+            self.datafile = open(path.join(self.save_location, filename + '.tsv'), 'w')
             self.datafile.write('Index\tTime\tPosition\tRate\tDepth\tRecoil\tStatus\n')
 
             fourcc = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
-            self.raw_vid = cv2.VideoWriter(filename + '_raw.mp4', fourcc, self.fps, (self.width, self.height))
-            self.out_vid = cv2.VideoWriter(filename + '.mp4', fourcc, self.fps, (self.width, self.height))
+            self.raw_vid = cv2.VideoWriter(path.join(self.save_location, filename + '_raw.mp4'), fourcc, self.fps, (self.width, self.height))
+            self.out_vid = cv2.VideoWriter(path.join(self.save_location, filename + '.mp4'), fourcc, self.fps, (self.width, self.height))
 
             if self.raw_vid.isOpened() and self.out_vid.isOpened():
                 self.index = 0
                 self.running = True
-        except:
+        except Exception as e:
+            print e.message
             self.running = False
 
     def stop(self):

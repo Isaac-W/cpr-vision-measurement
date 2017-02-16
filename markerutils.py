@@ -1,18 +1,19 @@
 PI = 3.141592654
 
+SAMPLE_TIME = 5
 FRAMES_PER_SEC = 30
 SEC_PER_MIN = 60
 
 RATE_RANGE = (95, 125)  # 100 - 120 BPM (plus some error in measurement)
-DEPTH_RANGE = (1.85, 2.55)  # 2 - 2.4 in (plus some error in measurement)
-RECOIL_THRESH = 0.15  # Allow for FULL chest recoil
+DEPTH_RANGE = (2, 5)  # At least 2 in (plus some error in measurement)
+RECOIL_THRESH = 0.2  # Allow for FULL chest recoil
 
 
 # Color ranges
 GREEN_COLOR_MIN = (45, 91, 77)
 GREEN_COLOR_MAX = (61, 224, 255)
-VIOLET_COLOR_MIN = (141, 89, 58)
-VIOLET_COLOR_MAX = (161, 255, 255)
+VIOLET_COLOR_MIN = (129, 100, 103)
+VIOLET_COLOR_MAX = (204, 190, 255)
 YELLOW_COLOR_MIN = (21, 100, 131)
 YELLOW_COLOR_MAX = (30, 245, 255)
 
