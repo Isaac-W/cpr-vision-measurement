@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import peakutils
 from markerutils import *
+import time
 
 # Status flags
 STATUS_GOOD = 0
@@ -16,9 +17,11 @@ class CPRStatus(object):
     def __init__(self, buffer_size=150):
         self.BUFFER_SIZE = buffer_size
         self.data = []
+        self.start_time = time.clock()
 
     def reset(self):
         self.data = []
+        self.start_time = time.clock()
 
     def update(self, marker):
         if not marker:
@@ -27,7 +30,10 @@ class CPRStatus(object):
         # Push position to buffer
         self.data.append(marker.position)
 
-        if len(self.data) >= self.BUFFER_SIZE:
+        # Get time
+        cur_time = time.clock()
+
+        if cur_time - self.start_time > SAMPLE_TIME:
             '''
             Compute status:
             Track continuous signal of marker position in a window of BUFFER_SIZE
@@ -58,7 +64,7 @@ class CPRStatus(object):
             avg_rate = 0
             for i in range(1, len(rate_points)):
                 # Get time between peaks and convert to rate
-                avg_rate += (FRAMES_PER_SEC * SEC_PER_MIN) / float(rate_points[i] - rate_points[i - 1])
+                avg_rate += ((len(self.data) / (cur_time - self.start_time)) * SEC_PER_MIN) / float(rate_points[i] - rate_points[i - 1])
             if len(rate_points) > 1:
                 avg_rate /= (len(rate_points) - 1)
 
@@ -87,7 +93,7 @@ class CPRStatus(object):
                 code = STATUS_DEEP
             elif avg_depth < DEPTH_RANGE[0]:
                 code = STATUS_SHALLOW
-            elif avg_recoil < RECOIL_THRESH:
+            elif avg_recoil > RECOIL_THRESH:
                 code = STATUS_RECOIL
 
             ''' Show plot
@@ -99,6 +105,7 @@ class CPRStatus(object):
 
             # Clear buffer
             self.data = []
+            self.start_time = time.clock()
 
             # Return status tuple
             return avg_rate, avg_depth, avg_recoil, code
