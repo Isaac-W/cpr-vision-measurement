@@ -5,7 +5,7 @@ FRAMES_PER_SEC = 30
 SEC_PER_MIN = 60
 
 RATE_RANGE = (95, 125)  # 100 - 120 BPM (plus some error in measurement)
-DEPTH_RANGE = (2, 5)  # At least 2 in (plus some error in measurement)
+DEPTH_RANGE = (1.95, 5)  # At least 2 in (plus some error in measurement)
 RECOIL_THRESH = 0.2  # Allow for FULL chest recoil
 
 
