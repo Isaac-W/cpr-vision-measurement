@@ -55,11 +55,15 @@ class CPRStatus(object):
             troughs = peakutils.indexes(np.array(neg_data), 0.2, 5)
             troughs = troughs.astype(int).tolist()
 
-            # Analyze rate (use higher resolution trough points)
+            # Analyze rate (use higher resolution trough points) -- NO! This may result it NEGATIVE indices
+            '''
             try:
                 rate_points = peakutils.interpolate(x_vals, neg_data, troughs)
             except:
                 rate_points = troughs
+            '''
+
+            rate_points = troughs
 
             avg_rate = 0
             for i in range(1, len(rate_points)):
