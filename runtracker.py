@@ -42,14 +42,14 @@ def main():
         print 'USAGE: runtracker.py marker_size participant_id [save_location]'
         return
 
-    S = float(sys.argv[1])
+    S = MARKER_SIZE
     F = 1
 
-    participant_id = sys.argv[2]
+    participant_id = sys.argv[1]
 
     save_location = '.'
-    if len(sys.argv) >= 4:
-        save_location = sys.argv[3]
+    if len(sys.argv) >= 3:
+        save_location = sys.argv[2]
 
     # Mouse callback for setting origin point
     def mouse_callback(event, x, y, flags, param):
@@ -130,7 +130,8 @@ def main():
                     last_rate, last_depth, last_recoil, last_code = rate, depth, recoil, code  # Update
                     print 'R: ' + str(last_rate) + ' D: ' + str(last_depth) + ' C: ' + str(last_recoil) + ' S: ' + str(last_code)
 
-                    statussender.send_status(code)
+                    if not (last_rate == 0 and last_depth == 0 and last_recoil == 0):
+                        statussender.send_status(code)
 
                 datalog.log(frame, output, tracker.get_origin(), tracked_marker.position if tracked_marker else 0, rate, depth, recoil, code)
 

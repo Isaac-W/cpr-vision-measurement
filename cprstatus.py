@@ -44,14 +44,19 @@ class CPRStatus(object):
                 - Allowing for full chest recoil; measure the amplitude of "up" peaks calibrated against neutral
             '''
 
-            x_vals = [x for x in range(0, len(self.data))]
+            # Smooth the data
+            window_size = 5
+            smooth_filter = np.array([1 / float(window_size) for x in range(window_size)])
+            data = np.convolve(np.array(self.data), smooth_filter, mode='valid')
 
-            # Get peaks (for recoil)
-            peaks = peakutils.indexes(np.array(self.data), 0.2, 5)
+            x_vals = [x for x in range(0, len(data))]
+
+            # Get peaks (for reco
+            peaks = peakutils.indexes(np.array(data), 0.5, 5)
             peaks = peaks.astype(int).tolist()
 
             # Get troughs (depth peaks)
-            neg_data = [-x for x in self.data]
+            neg_data = [-x for x in data]
             troughs = peakutils.indexes(np.array(neg_data), 0.2, 5)
             troughs = troughs.astype(int).tolist()
 
@@ -68,7 +73,7 @@ class CPRStatus(object):
             avg_rate = 0
             for i in range(1, len(rate_points)):
                 # Get time between peaks and convert to rate
-                avg_rate += ((len(self.data) / (cur_time - self.start_time)) * SEC_PER_MIN) / float(rate_points[i] - rate_points[i - 1])
+                avg_rate += ((len(data) / (cur_time - self.start_time)) * SEC_PER_MIN) / float(rate_points[i] - rate_points[i - 1])
             if len(rate_points) > 1:
                 avg_rate /= (len(rate_points) - 1)
 
@@ -101,9 +106,9 @@ class CPRStatus(object):
                 code = STATUS_RECOIL
 
             ''' Show plot
-            plt.plot(x_vals, self.data)
-            plt.plot(peaks, [self.data[x] for x in peaks], 'rx')
-            plt.plot(troughs, [self.data[x] for x in troughs], 'bx')
+            plt.plot(x_vals, data)
+            plt.plot(peaks, [data[x] for x in peaks], 'rx')
+            plt.plot(troughs, [data[x] for x in troughs], 'bx')
             plt.show()
             #'''
 
