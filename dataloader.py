@@ -84,7 +84,7 @@ class Compression(object):
         return RATE_RANGE[0] <= self.rate <= RATE_RANGE[1]
 
     def is_correct(self):
-        return self.is_depth_correct() and self.is_recoil_correct() and self.is_rate_correct()
+        return self.is_depth_correct() and self.is_recoil_correct()
 
 
 class DataLoader(object):
