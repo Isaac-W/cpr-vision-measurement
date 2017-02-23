@@ -3,6 +3,9 @@ import cv2
 from os import path
 
 
+TIME_FORMAT = '%m-%d-%y_%H:%M:%S.%f'
+
+
 class DataLogger(object):
     def __init__(self, fps=30, width=1920, height=1080, save_location='.'):
         self.fps = fps
@@ -65,7 +68,7 @@ class DataLogger(object):
 
         # Get timestamp
         cur_time = datetime.now()
-        timestamp = cur_time.strftime('%m-%d-%y_%H:%M:%S')
+        timestamp = cur_time.strftime(TIME_FORMAT)
 
         # Write status
         vals = [self.index, timestamp, origin, position,

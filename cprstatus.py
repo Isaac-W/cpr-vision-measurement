@@ -45,19 +45,19 @@ class CPRStatus(object):
             '''
 
             # Smooth the data
-            window_size = 5
+            window_size = 3
             smooth_filter = np.array([1 / float(window_size) for x in range(window_size)])
             data = np.convolve(np.array(self.data), smooth_filter, mode='valid')
 
             x_vals = [x for x in range(0, len(data))]
 
-            # Get peaks (for reco
-            peaks = peakutils.indexes(np.array(data), 0.5, 5)
+            # Get peaks (for recoil)
+            peaks = peakutils.indexes(np.array(data), 0.3, 8)
             peaks = peaks.astype(int).tolist()
 
             # Get troughs (depth peaks)
             neg_data = [-x for x in data]
-            troughs = peakutils.indexes(np.array(neg_data), 0.2, 5)
+            troughs = peakutils.indexes(np.array(neg_data), 0.3, 8)
             troughs = troughs.astype(int).tolist()
 
             # Analyze rate (use higher resolution trough points) -- NO! This may result it NEGATIVE indices
