@@ -1,0 +1,269 @@
+ParticipantID,Condition,Participated,Question,Answer,Group,LongQuestion
+10_13_10_31_15,Silenzio,no,Q1,7.62,Control,Audio feedback helped me learn the movement of the gesture
+10_13_10_31_15,Silenzio,no,Q2,6.31,Control,Audio feedback did not help me learn the movement of the gesture
+10_13_10_31_15,Silenzio,no,Q3,0.85,Control,Audio feedback helped me learn the timing of the gesture
+10_13_10_31_15,Silenzio,no,Q4,8.38,Control,Audio feedback did not help me learn the timing of the gesture
+10_13_15_29_56,GlissandoM,no,Q1,5.46,Glissando,Audio feedback helped me learn the movement of the gesture
+10_13_15_29_56,GlissandoM,no,Q2,2.77,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_13_15_29_56,GlissandoM,no,Q3,6.62,Glissando,Audio feedback helped me learn the timing of the gesture
+10_13_15_29_56,GlissandoM,no,Q4,7.15,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_13_15_5_39,GlissandoS,no,Q1,9.15,Glissando,Audio feedback helped me learn the movement of the gesture
+10_13_15_5_39,GlissandoS,no,Q2,6.31,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_13_15_5_39,GlissandoS,no,Q3,2,Glissando,Audio feedback helped me learn the timing of the gesture
+10_13_15_5_39,GlissandoS,no,Q4,9.54,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_14_15_42_19,GlissandoF,no,Q1,7.08,Glissando,Audio feedback helped me learn the movement of the gesture
+10_14_15_42_19,GlissandoF,no,Q2,7.15,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_14_15_42_19,GlissandoF,no,Q3,1.69,Glissando,Audio feedback helped me learn the timing of the gesture
+10_14_15_42_19,GlissandoF,no,Q4,8.77,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_14_17_50_47,Silenzio,no,Q1,5.54,Control,Audio feedback helped me learn the movement of the gesture
+10_14_17_50_47,Silenzio,no,Q2,6.46,Control,Audio feedback did not help me learn the movement of the gesture
+10_14_17_50_47,Silenzio,no,Q3,3.15,Control,Audio feedback helped me learn the timing of the gesture
+10_14_17_50_47,Silenzio,no,Q4,7.31,Control,Audio feedback did not help me learn the timing of the gesture
+10_15_14_27_13,GlissandoS,no,Q1,8.69,Glissando,Audio feedback helped me learn the movement of the gesture
+10_15_14_27_13,GlissandoS,no,Q2,8.92,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_15_14_27_13,GlissandoS,no,Q3,4.54,Glissando,Audio feedback helped me learn the timing of the gesture
+10_15_14_27_13,GlissandoS,no,Q4,9.08,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_15_14_43_39,GlissandoM,no,Q1,5.08,Glissando,Audio feedback helped me learn the movement of the gesture
+10_15_14_43_39,GlissandoM,no,Q2,5.15,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_15_14_43_39,GlissandoM,no,Q3,5,Glissando,Audio feedback helped me learn the timing of the gesture
+10_15_14_43_39,GlissandoM,no,Q4,7.92,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_15_15_17_56,GlissandoF,yes,Q1,2.77,Glissando,Audio feedback helped me learn the movement of the gesture
+10_15_15_17_56,GlissandoF,yes,Q2,2.69,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_15_15_17_56,GlissandoF,yes,Q3,0,Glissando,Audio feedback helped me learn the timing of the gesture
+10_15_15_17_56,GlissandoF,yes,Q4,10,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_15_15_43_24,GlissandoF,yes,Q1,7.15,Glissando,Audio feedback helped me learn the movement of the gesture
+10_15_15_43_24,GlissandoF,yes,Q2,6.31,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_15_15_43_24,GlissandoF,yes,Q3,2.54,Glissando,Audio feedback helped me learn the timing of the gesture
+10_15_15_43_24,GlissandoF,yes,Q4,8.08,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_15_16_14_50,GlissandoM,no,Q1,7.85,Glissando,Audio feedback helped me learn the movement of the gesture
+10_15_16_14_50,GlissandoM,no,Q2,8.38,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_15_16_14_50,GlissandoM,no,Q3,1.69,Glissando,Audio feedback helped me learn the timing of the gesture
+10_15_16_14_50,GlissandoM,no,Q4,9.85,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_15_16_23_26,GlissandoF,no,Q1,9.62,Glissando,Audio feedback helped me learn the movement of the gesture
+10_15_16_23_26,GlissandoF,no,Q2,9.62,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_15_16_23_26,GlissandoF,no,Q3,0.38,Glissando,Audio feedback helped me learn the timing of the gesture
+10_15_16_23_26,GlissandoF,no,Q4,9.54,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_15_16_37_53,GlissandoF,yes,Q1,7.15,Glissando,Audio feedback helped me learn the movement of the gesture
+10_15_16_37_53,GlissandoF,yes,Q2,6.69,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_15_16_37_53,GlissandoF,yes,Q3,3.08,Glissando,Audio feedback helped me learn the timing of the gesture
+10_15_16_37_53,GlissandoF,yes,Q4,6.85,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_15_16_5_44,GlissandoS,no,Q1,6.46,Glissando,Audio feedback helped me learn the movement of the gesture
+10_15_16_5_44,GlissandoS,no,Q2,7.54,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_15_16_5_44,GlissandoS,no,Q3,2.23,Glissando,Audio feedback helped me learn the timing of the gesture
+10_15_16_5_44,GlissandoS,no,Q4,8.46,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_15_16_57_39,Silenzio,no,Q1,9.9,Control,Audio feedback helped me learn the movement of the gesture
+10_15_16_57_39,Silenzio,no,Q2,9.6,Control,Audio feedback did not help me learn the movement of the gesture
+10_15_16_57_39,Silenzio,no,Q3,2.3,Control,Audio feedback helped me learn the timing of the gesture
+10_15_16_57_39,Silenzio,no,Q4,10.5,Control,Audio feedback did not help me learn the timing of the gesture
+10_18_13_17_57,GlissandoM,no,Q1,7.77,Glissando,Audio feedback helped me learn the movement of the gesture
+10_18_13_17_57,GlissandoM,no,Q2,8.77,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_18_13_17_57,GlissandoM,no,Q3,2.31,Glissando,Audio feedback helped me learn the timing of the gesture
+10_18_13_17_57,GlissandoM,no,Q4,6.31,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_18_13_37_33,GlissandoF,no,Q1,7.54,Glissando,Audio feedback helped me learn the movement of the gesture
+10_18_13_37_33,GlissandoF,no,Q2,7.77,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_18_13_37_33,GlissandoF,no,Q3,2.46,Glissando,Audio feedback helped me learn the timing of the gesture
+10_18_13_37_33,GlissandoF,no,Q4,7.92,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_18_14_18_43,GlissandoM,no,Q1,7.54,Glissando,Audio feedback helped me learn the movement of the gesture
+10_18_14_18_43,GlissandoM,no,Q2,6.23,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_18_14_18_43,GlissandoM,no,Q3,2.92,Glissando,Audio feedback helped me learn the timing of the gesture
+10_18_14_18_43,GlissandoM,no,Q4,7.69,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_18_14_42_28,GlissandoF,no,Q1,7.69,Glissando,Audio feedback helped me learn the movement of the gesture
+10_18_14_42_28,GlissandoF,no,Q2,1.77,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_18_14_42_28,GlissandoF,no,Q3,8.15,Glissando,Audio feedback helped me learn the timing of the gesture
+10_18_14_42_28,GlissandoF,no,Q4,4.69,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_18_15_1_45,GlissandoM,yes,Q1,2.85,Glissando,Audio feedback helped me learn the movement of the gesture
+10_18_15_1_45,GlissandoM,yes,Q2,2.08,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_18_15_1_45,GlissandoM,yes,Q3,6.62,Glissando,Audio feedback helped me learn the timing of the gesture
+10_18_15_1_45,GlissandoM,yes,Q4,7.62,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_18_15_39_31,Silenzio,no,Q1,7.15,Control,Audio feedback helped me learn the movement of the gesture
+10_18_15_39_31,Silenzio,no,Q2,7.38,Control,Audio feedback did not help me learn the movement of the gesture
+10_18_15_39_31,Silenzio,no,Q3,2.08,Control,Audio feedback helped me learn the timing of the gesture
+10_18_15_39_31,Silenzio,no,Q4,6.92,Control,Audio feedback did not help me learn the timing of the gesture
+10_19_14_59_6,Silenzio,no,Q1,5.92,Control,Audio feedback helped me learn the movement of the gesture
+10_19_14_59_6,Silenzio,no,Q2,7.08,Control,Audio feedback did not help me learn the movement of the gesture
+10_19_14_59_6,Silenzio,no,Q3,2.08,Control,Audio feedback helped me learn the timing of the gesture
+10_19_14_59_6,Silenzio,no,Q4,0.92,Control,Audio feedback did not help me learn the timing of the gesture
+10_19_15_10_21,GlissandoM,yes,Q1,5,Glissando,Audio feedback helped me learn the movement of the gesture
+10_19_15_10_21,GlissandoM,yes,Q2,7,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_19_15_10_21,GlissandoM,yes,Q3,3,Glissando,Audio feedback helped me learn the timing of the gesture
+10_19_15_10_21,GlissandoM,yes,Q4,7,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_19_15_23_29,GlissandoM,no,Q1,8.69,Glissando,Audio feedback helped me learn the movement of the gesture
+10_19_15_23_29,GlissandoM,no,Q2,9,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_19_15_23_29,GlissandoM,no,Q3,2.31,Glissando,Audio feedback helped me learn the timing of the gesture
+10_19_15_23_29,GlissandoM,no,Q4,6.31,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_19_16_18_53,GlissandoF,no,Q1,7.77,Glissando,Audio feedback helped me learn the movement of the gesture
+10_19_16_18_53,GlissandoF,no,Q2,2.15,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_19_16_18_53,GlissandoF,no,Q3,7.54,Glissando,Audio feedback helped me learn the timing of the gesture
+10_19_16_18_53,GlissandoF,no,Q4,8,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_19_16_37_15,GlissandoM,yes,Q1,7.31,Glissando,Audio feedback helped me learn the movement of the gesture
+10_19_16_37_15,GlissandoM,yes,Q2,1.23,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_19_16_37_15,GlissandoM,yes,Q3,9.15,Glissando,Audio feedback helped me learn the timing of the gesture
+10_19_16_37_15,GlissandoM,yes,Q4,0.77,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_19_17_15_56,Silenzio,no,Q1,5.31,Control,Audio feedback helped me learn the movement of the gesture
+10_19_17_15_56,Silenzio,no,Q2,4.85,Control,Audio feedback did not help me learn the movement of the gesture
+10_19_17_15_56,Silenzio,no,Q3,4.92,Control,Audio feedback helped me learn the timing of the gesture
+10_19_17_15_56,Silenzio,no,Q4,7,Control,Audio feedback did not help me learn the timing of the gesture
+10_19_17_51_21,GlissandoS,no,Q1,6.62,Glissando,Audio feedback helped me learn the movement of the gesture
+10_19_17_51_21,GlissandoS,no,Q2,4.69,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_19_17_51_21,GlissandoS,no,Q3,2,Glissando,Audio feedback helped me learn the timing of the gesture
+10_19_17_51_21,GlissandoS,no,Q4,10,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_19_18_19_19,Silenzio,no,Q1,8.77,Control,Audio feedback helped me learn the movement of the gesture
+10_19_18_19_19,Silenzio,no,Q2,9.77,Control,Audio feedback did not help me learn the movement of the gesture
+10_19_18_19_19,Silenzio,no,Q3,0.15,Control,Audio feedback helped me learn the timing of the gesture
+10_19_18_19_19,Silenzio,no,Q4,8.92,Control,Audio feedback did not help me learn the timing of the gesture
+10_19_18_2_35,GlissandoF,no,Q1,9.62,Glissando,Audio feedback helped me learn the movement of the gesture
+10_19_18_2_35,GlissandoF,no,Q2,7.54,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_19_18_2_35,GlissandoF,no,Q3,0.62,Glissando,Audio feedback helped me learn the timing of the gesture
+10_19_18_2_35,GlissandoF,no,Q4,7.15,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_19_18_31_56,GlissandoM,yes,Q1,8.31,Glissando,Audio feedback helped me learn the movement of the gesture
+10_19_18_31_56,GlissandoM,yes,Q2,9.46,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_19_18_31_56,GlissandoM,yes,Q3,0.69,Glissando,Audio feedback helped me learn the timing of the gesture
+10_19_18_31_56,GlissandoM,yes,Q4,7.77,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_20_12_1_52,GlissandoS,no,Q1,10,Glissando,Audio feedback helped me learn the movement of the gesture
+10_20_12_1_52,GlissandoS,no,Q2,3.38,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_20_12_1_52,GlissandoS,no,Q3,5.31,Glissando,Audio feedback helped me learn the timing of the gesture
+10_20_12_1_52,GlissandoS,no,Q4,0,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_20_12_42_30,GlissandoF,no,Q1,10,Glissando,Audio feedback helped me learn the movement of the gesture
+10_20_12_42_30,GlissandoF,no,Q2,0,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_20_12_42_30,GlissandoF,no,Q3,10,Glissando,Audio feedback helped me learn the timing of the gesture
+10_20_12_42_30,GlissandoF,no,Q4,10,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_20_12_51_13,GlissandoM,yes,Q1,8.92,Glissando,Audio feedback helped me learn the movement of the gesture
+10_20_12_51_13,GlissandoM,yes,Q2,8.46,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_20_12_51_13,GlissandoM,yes,Q3,0,Glissando,Audio feedback helped me learn the timing of the gesture
+10_20_12_51_13,GlissandoM,yes,Q4,8.15,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_20_13_10_13,Silenzio,no,Q1,6.15,Control,Audio feedback helped me learn the movement of the gesture
+10_20_13_10_13,Silenzio,no,Q2,7.69,Control,Audio feedback did not help me learn the movement of the gesture
+10_20_13_10_13,Silenzio,no,Q3,1.92,Control,Audio feedback helped me learn the timing of the gesture
+10_20_13_10_13,Silenzio,no,Q4,6.77,Control,Audio feedback did not help me learn the timing of the gesture
+10_20_13_47_42,GlissandoS,no,Q1,7.23,Glissando,Audio feedback helped me learn the movement of the gesture
+10_20_13_47_42,GlissandoS,no,Q2,5.15,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_20_13_47_42,GlissandoS,no,Q3,3.31,Glissando,Audio feedback helped me learn the timing of the gesture
+10_20_13_47_42,GlissandoS,no,Q4,7.77,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_20_14_26_46,GlissandoM,yes,Q1,2.46,Glissando,Audio feedback helped me learn the movement of the gesture
+10_20_14_26_46,GlissandoM,yes,Q2,2.31,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_20_14_26_46,GlissandoM,yes,Q3,6.38,Glissando,Audio feedback helped me learn the timing of the gesture
+10_20_14_26_46,GlissandoM,yes,Q4,2.46,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_20_14_58_46,Silenzio,no,Q1,2.62,Control,Audio feedback helped me learn the movement of the gesture
+10_20_14_58_46,Silenzio,no,Q2,1.69,Control,Audio feedback did not help me learn the movement of the gesture
+10_20_14_58_46,Silenzio,no,Q3,5.92,Control,Audio feedback helped me learn the timing of the gesture
+10_20_14_58_46,Silenzio,no,Q4,4.08,Control,Audio feedback did not help me learn the timing of the gesture
+10_20_14_9_41,GlissandoF,no,Q1,10,Glissando,Audio feedback helped me learn the movement of the gesture
+10_20_14_9_41,GlissandoF,no,Q2,10,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_20_14_9_41,GlissandoF,no,Q3,0,Glissando,Audio feedback helped me learn the timing of the gesture
+10_20_14_9_41,GlissandoF,no,Q4,10,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_20_15_24_23,GlissandoS,no,Q1,8.69,Glissando,Audio feedback helped me learn the movement of the gesture
+10_20_15_24_23,GlissandoS,no,Q2,6.23,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_20_15_24_23,GlissandoS,no,Q3,0.46,Glissando,Audio feedback helped me learn the timing of the gesture
+10_20_15_24_23,GlissandoS,no,Q4,8.62,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_20_15_51_6,GlissandoF,no,Q1,8.54,Glissando,Audio feedback helped me learn the movement of the gesture
+10_20_15_51_6,GlissandoF,no,Q2,8.62,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_20_15_51_6,GlissandoF,no,Q3,0.15,Glissando,Audio feedback helped me learn the timing of the gesture
+10_20_15_51_6,GlissandoF,no,Q4,9.62,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_20_16_12_17,GlissandoM,yes,Q1,7.54,Glissando,Audio feedback helped me learn the movement of the gesture
+10_20_16_12_17,GlissandoM,yes,Q2,3.46,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_20_16_12_17,GlissandoM,yes,Q3,8.08,Glissando,Audio feedback helped me learn the timing of the gesture
+10_20_16_12_17,GlissandoM,yes,Q4,7.54,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_20_16_31_1,Silenzio,no,Q1,8.31,Control,Audio feedback helped me learn the movement of the gesture
+10_20_16_31_1,Silenzio,no,Q2,8.31,Control,Audio feedback did not help me learn the movement of the gesture
+10_20_16_31_1,Silenzio,no,Q3,0.31,Control,Audio feedback helped me learn the timing of the gesture
+10_20_16_31_1,Silenzio,no,Q4,5,Control,Audio feedback did not help me learn the timing of the gesture
+10_20_17_20_25,GlissandoF,no,Q1,1,Glissando,Audio feedback helped me learn the movement of the gesture
+10_20_17_20_25,GlissandoF,no,Q2,0.85,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_20_17_20_25,GlissandoF,no,Q3,6.46,Glissando,Audio feedback helped me learn the timing of the gesture
+10_20_17_20_25,GlissandoF,no,Q4,9.46,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_20_17_35_57,GlissandoS,yes,Q1,1.08,Glissando,Audio feedback helped me learn the movement of the gesture
+10_20_17_35_57,GlissandoS,yes,Q2,0.85,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_20_17_35_57,GlissandoS,yes,Q3,6.31,Glissando,Audio feedback helped me learn the timing of the gesture
+10_20_17_35_57,GlissandoS,yes,Q4,2.23,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_20_17_52_33,Silenzio,no,Q1,9.77,Control,Audio feedback helped me learn the movement of the gesture
+10_20_17_52_33,Silenzio,no,Q2,9.77,Control,Audio feedback did not help me learn the movement of the gesture
+10_20_17_52_33,Silenzio,no,Q3,0.15,Control,Audio feedback helped me learn the timing of the gesture
+10_20_17_52_33,Silenzio,no,Q4,9.85,Control,Audio feedback did not help me learn the timing of the gesture
+10_20_17_7_39,GlissandoS,no,Q1,7.85,Glissando,Audio feedback helped me learn the movement of the gesture
+10_20_17_7_39,GlissandoS,no,Q2,3.23,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_20_17_7_39,GlissandoS,no,Q3,2.85,Glissando,Audio feedback helped me learn the timing of the gesture
+10_20_17_7_39,GlissandoS,no,Q4,7.62,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_21_11_50_54,GlissandoS,no,Q1,6.62,Glissando,Audio feedback helped me learn the movement of the gesture
+10_21_11_50_54,GlissandoS,no,Q2,3.23,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_21_11_50_54,GlissandoS,no,Q3,5.38,Glissando,Audio feedback helped me learn the timing of the gesture
+10_21_11_50_54,GlissandoS,no,Q4,6.31,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_21_12_46_30,GlissandoF,no,Q1,6.54,Glissando,Audio feedback helped me learn the movement of the gesture
+10_21_12_46_30,GlissandoF,no,Q2,4.92,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_21_12_46_30,GlissandoF,no,Q3,4.92,Glissando,Audio feedback helped me learn the timing of the gesture
+10_21_12_46_30,GlissandoF,no,Q4,4.62,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_21_13_23_28,GlissandoS,no,Q1,5,Glissando,Audio feedback helped me learn the movement of the gesture
+10_21_13_23_28,GlissandoS,no,Q2,2,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_21_13_23_28,GlissandoS,no,Q3,2,Glissando,Audio feedback helped me learn the timing of the gesture
+10_21_13_23_28,GlissandoS,no,Q4,7,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_21_13_37_22,GlissandoF,no,Q1,8.46,Glissando,Audio feedback helped me learn the movement of the gesture
+10_21_13_37_22,GlissandoF,no,Q2,8,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_21_13_37_22,GlissandoF,no,Q3,1.85,Glissando,Audio feedback helped me learn the timing of the gesture
+10_21_13_37_22,GlissandoF,no,Q4,7.23,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_21_13_54_7,GlissandoS,yes,Q1,2.38,Glissando,Audio feedback helped me learn the movement of the gesture
+10_21_13_54_7,GlissandoS,yes,Q2,2.85,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_21_13_54_7,GlissandoS,yes,Q3,6.92,Glissando,Audio feedback helped me learn the timing of the gesture
+10_21_13_54_7,GlissandoS,yes,Q4,8.54,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_21_14_51_38,Silenzio,no,Q1,10,Control,Audio feedback helped me learn the movement of the gesture
+10_21_14_51_38,Silenzio,no,Q2,10,Control,Audio feedback did not help me learn the movement of the gesture
+10_21_14_51_38,Silenzio,no,Q3,0,Control,Audio feedback helped me learn the timing of the gesture
+10_21_14_51_38,Silenzio,no,Q4,5.15,Control,Audio feedback did not help me learn the timing of the gesture
+10_21_15_48_31,GlissandoS,no,Q1,8.46,Glissando,Audio feedback helped me learn the movement of the gesture
+10_21_15_48_31,GlissandoS,no,Q2,8.23,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_21_15_48_31,GlissandoS,no,Q3,1.08,Glissando,Audio feedback helped me learn the timing of the gesture
+10_21_15_48_31,GlissandoS,no,Q4,4.69,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_21_16_27_6,GlissandoF,no,Q1,9.15,Glissando,Audio feedback helped me learn the movement of the gesture
+10_21_16_27_6,GlissandoF,no,Q2,3.77,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_21_16_27_6,GlissandoF,no,Q3,0.69,Glissando,Audio feedback helped me learn the timing of the gesture
+10_21_16_27_6,GlissandoF,no,Q4,7.54,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_21_16_47_21,GlissandoS,yes,Q1,6.54,Glissando,Audio feedback helped me learn the movement of the gesture
+10_21_16_47_21,GlissandoS,yes,Q2,5,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_21_16_47_21,GlissandoS,yes,Q3,5.23,Glissando,Audio feedback helped me learn the timing of the gesture
+10_21_16_47_21,GlissandoS,yes,Q4,5.38,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_21_17_13_21,Silenzio,no,Q1,9.69,Control,Audio feedback helped me learn the movement of the gesture
+10_21_17_13_21,Silenzio,no,Q2,7.54,Control,Audio feedback did not help me learn the movement of the gesture
+10_21_17_13_21,Silenzio,no,Q3,1.62,Control,Audio feedback helped me learn the timing of the gesture
+10_21_17_13_21,Silenzio,no,Q4,9.23,Control,Audio feedback did not help me learn the timing of the gesture
+10_21_17_22_19,Silenzio,no,Q1,10,Control,Audio feedback helped me learn the movement of the gesture
+10_21_17_22_19,Silenzio,no,Q2,0,Control,Audio feedback did not help me learn the movement of the gesture
+10_21_17_22_19,Silenzio,no,Q3,10,Control,Audio feedback helped me learn the timing of the gesture
+10_21_17_22_19,Silenzio,no,Q4,10,Control,Audio feedback did not help me learn the timing of the gesture
+10_21_17_38_56,GlissandoS,no,Q1,3,Glissando,Audio feedback helped me learn the movement of the gesture
+10_21_17_38_56,GlissandoS,no,Q2,4.62,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_21_17_38_56,GlissandoS,no,Q3,7.46,Glissando,Audio feedback helped me learn the timing of the gesture
+10_21_17_38_56,GlissandoS,no,Q4,7.54,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_22_15_17_43,Silenzio,yes,Q1,4.77,Control,Audio feedback helped me learn the movement of the gesture
+10_22_15_17_43,Silenzio,yes,Q2,4.85,Control,Audio feedback did not help me learn the movement of the gesture
+10_22_15_17_43,Silenzio,yes,Q3,2.62,Control,Audio feedback helped me learn the timing of the gesture
+10_22_15_17_43,Silenzio,yes,Q4,4.08,Control,Audio feedback did not help me learn the timing of the gesture
+10_22_15_2_52,GlissandoF,no,Q1,2.46,Glissando,Audio feedback helped me learn the movement of the gesture
+10_22_15_2_52,GlissandoF,no,Q2,2.08,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_22_15_2_52,GlissandoF,no,Q3,3.62,Glissando,Audio feedback helped me learn the timing of the gesture
+10_22_15_2_52,GlissandoF,no,Q4,6.08,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_22_15_33_52,GlissandoS,no,Q1,8.38,Glissando,Audio feedback helped me learn the movement of the gesture
+10_22_15_33_52,GlissandoS,no,Q2,7.69,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_22_15_33_52,GlissandoS,no,Q3,0.85,Glissando,Audio feedback helped me learn the timing of the gesture
+10_22_15_33_52,GlissandoS,no,Q4,8.15,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_22_15_44_45,GlissandoM,no,Q1,9.08,Glissando,Audio feedback helped me learn the movement of the gesture
+10_22_15_44_45,GlissandoM,no,Q2,6.77,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_22_15_44_45,GlissandoM,no,Q3,0.77,Glissando,Audio feedback helped me learn the timing of the gesture
+10_22_15_44_45,GlissandoM,no,Q4,8.23,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_22_16_5_13,Silenzio,yes,Q1,9.69,Control,Audio feedback helped me learn the movement of the gesture
+10_22_16_5_13,Silenzio,yes,Q2,9.69,Control,Audio feedback did not help me learn the movement of the gesture
+10_22_16_5_13,Silenzio,yes,Q3,0.31,Control,Audio feedback helped me learn the timing of the gesture
+10_22_16_5_13,Silenzio,yes,Q4,0.69,Control,Audio feedback did not help me learn the timing of the gesture
+10_30_20_58_57,GlissandoM,no,Q1,10,Glissando,Audio feedback helped me learn the movement of the gesture
+10_30_20_58_57,GlissandoM,no,Q2,10,Glissando,Audio feedback did not help me learn the movement of the gesture
+10_30_20_58_57,GlissandoM,no,Q3,0,Glissando,Audio feedback helped me learn the timing of the gesture
+10_30_20_58_57,GlissandoM,no,Q4,10,Glissando,Audio feedback did not help me learn the timing of the gesture
+10_30_21_26_1,Silenzio,no,Q1,9.08,Control,Audio feedback helped me learn the movement of the gesture
+10_30_21_26_1,Silenzio,no,Q2,9,Control,Audio feedback did not help me learn the movement of the gesture
+10_30_21_26_1,Silenzio,no,Q3,0.54,Control,Audio feedback helped me learn the timing of the gesture
+10_30_21_26_1,Silenzio,no,Q4,9.08,Control,Audio feedback did not help me learn the timing of the gesture
+10_30_21_36_59,Silenzio,yes,Q1,3.46,Control,Audio feedback helped me learn the movement of the gesture
+10_30_21_36_59,Silenzio,yes,Q2,1.77,Control,Audio feedback did not help me learn the movement of the gesture
+10_30_21_36_59,Silenzio,yes,Q3,6.92,Control,Audio feedback helped me learn the timing of the gesture
+10_30_21_36_59,Silenzio,yes,Q4,6.54,Control,Audio feedback did not help me learn the timing of the gesture
+11_2_14_52_20,GlissandoM,no,Q1,8.92,Glissando,Audio feedback helped me learn the movement of the gesture
+11_2_14_52_20,GlissandoM,no,Q2,8.85,Glissando,Audio feedback did not help me learn the movement of the gesture
+11_2_14_52_20,GlissandoM,no,Q3,1,Glissando,Audio feedback helped me learn the timing of the gesture
+11_2_14_52_20,GlissandoM,no,Q4,1,Glissando,Audio feedback did not help me learn the timing of the gesture

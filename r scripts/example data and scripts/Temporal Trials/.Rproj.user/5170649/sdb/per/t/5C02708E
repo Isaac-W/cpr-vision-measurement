@@ -1,0 +1,22 @@
+{
+    "contents" : "",
+    "created" : 1410991522948.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "5C02708E",
+    "lastKnownWriteTime" : 7741240722073845761,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "caption" : "qs_sum",
+        "contentUrl" : "content?title=qs_sum&file=3049d5fe42ea473eb879b10d2711b23e.htm",
+        "displayedObservations" : 32,
+        "displayedVariables" : 7,
+        "totalObservations" : 32,
+        "variables" : 7
+    },
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

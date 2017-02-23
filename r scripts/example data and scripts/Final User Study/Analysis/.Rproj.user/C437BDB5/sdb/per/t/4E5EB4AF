@@ -1,0 +1,22 @@
+{
+    "contents" : "",
+    "created" : 1410482425311.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "4E5EB4AF",
+    "lastKnownWriteTime" : 29836824280170576,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "caption" : "q2s_short",
+        "contentUrl" : "content?title=q2s_short&file=03d4328a13964c8fa073683f87d04554.htm",
+        "displayedObservations" : 216,
+        "displayedVariables" : 8,
+        "totalObservations" : 216,
+        "variables" : 8
+    },
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

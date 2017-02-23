@@ -1,0 +1,22 @@
+{
+    "contents" : "",
+    "created" : 1410557600557.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "E96B734A",
+    "lastKnownWriteTime" : 7741240723082584096,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "caption" : "summaryFsum",
+        "contentUrl" : "content?title=summaryFsum&file=1b21bde47c814ae4990a9ae18dd08932.htm",
+        "displayedObservations" : 10,
+        "displayedVariables" : 7,
+        "totalObservations" : 10,
+        "variables" : 7
+    },
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

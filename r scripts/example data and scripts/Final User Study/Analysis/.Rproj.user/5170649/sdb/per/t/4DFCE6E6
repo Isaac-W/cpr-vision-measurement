@@ -1,0 +1,17 @@
+{
+    "contents" : "library(ggplot2)\n\n\nlibrary(doBy);\nlibrary(nlme);\nlibrary(car); #needed for ANOVA function\nrequire(multcomp)\n\nbrewerPalette = c(\"#ffeda0\", \"#f03b20\")\n\nresize.win <- function(Width=5, Height=3) #default for chi intended use paper\n{\n  # works for windows\n  dev.off(); # dev.new(width=6, height=6)\n  windows(record=TRUE, width=Width, height=Height)\n}\nresize.win()\n\nsummary<- read.csv(\"C:/Users/sarahms/Dropbox/Research/Projects/CHI 2015/Glissando Data/Analysis/TTCSNO.csv\")\nsummaryT <- summarySE(summary, measurevar=\"AverageLength\", groupvars=c(\"Condition\",\"Type\"))\n# Error bars represent standard error of the mean\ng = ggplot(summaryT, aes(x=Condition, y=(AverageLength/1000000000), fill=Type)) + \n  geom_bar(position=position_dodge(), stat=\"identity\") +\n  geom_errorbar(aes(ymin=(AverageLength/1000000000)-(sd/1000000000), ymax=(AverageLength/1000000000)+(sd/1000000000)),\n                width=.2,                    # Width of the error bars\n                position=position_dodge(.9))\ng+ theme_bw() + ylab(\"Average Gesture Length (s)\")+ scale_fill_manual(values=brewerPalette) + theme(legend.position=\"none\")\nggsave(\"OldAverageLengthNoLegend.png\", dpi=300)\n\n\n\n\n\n\n\ng\nresize.win()\nggsave(\"Box_R_legend_top.png\", dpi=300)\n",
+    "created" : 1411144153854.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "451425679",
+    "id" : "4DFCE6E6",
+    "lastKnownWriteTime" : 1411249653,
+    "path" : "C:/Users/sarahms/Dropbox/Research/Projects/CHI 2015/Glissando Data/Analysis/oldfigures.R",
+    "project_path" : "oldfigures.R",
+    "properties" : {
+        "tempName" : "Untitled2"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

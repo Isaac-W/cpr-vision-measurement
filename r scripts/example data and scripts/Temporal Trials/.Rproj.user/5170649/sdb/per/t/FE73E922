@@ -1,0 +1,16 @@
+{
+    "contents" : "## Summarizes data.\n## Gives count, mean, standard deviation, standard error of the mean, and confidence interval (default 95%).\n##   data: a data frame.\n##   measurevar: the name of a column that contains the variable to be summariezed\n##   groupvars: a vector containing names of columns that contain grouping variables\n##   na.rm: a boolean that indicates whether to ignore NA's\n##   conf.interval: the percent range of the confidence interval (default is 95%)\nsummarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,\n                      conf.interval=.95, .drop=TRUE) {\n  require(plyr)\n  \n  # New version of length which can handle NA's: if na.rm==T, don't count them\n  length2 <- function (x, na.rm=FALSE) {\n    if (na.rm) sum(!is.na(x))\n    else       length(x)\n  }\n  \n  # This does the summary. For each group's data frame, return a vector with\n  # N, mean, and sd\n  datac <- ddply(data, groupvars, .drop=.drop,\n                 .fun = function(xx, col) {\n                   c(N    = length2(xx[[col]], na.rm=na.rm),\n                     mean = mean   (xx[[col]], na.rm=na.rm),\n                     sd   = sd     (xx[[col]], na.rm=na.rm)\n                   )\n                 },\n                 measurevar\n  )\n  \n  # Rename the \"mean\" column    \n  datac <- rename(datac, c(\"mean\" = measurevar))\n  \n  datac$se <- datac$sd / sqrt(datac$N)  # Calculate standard error of the mean\n  \n  # Confidence interval multiplier for standard error\n  # Calculate t-statistic for confidence interval: \n  # e.g., if conf.interval is .95, use .975 (above/below), and use df=N-1\n  ciMult <- qt(conf.interval/2 + .5, datac$N-1)\n  datac$ci <- datac$se * ciMult\n  \n  return(datac)\n}\n\nIsOutlier = function(var, mean, sd){\n  max = mean+sd*3\n  min = mean-sd*3\n  return(var > max | var < min);\n}",
+    "created" : 1410551844203.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "72578166",
+    "id" : "FE73E922",
+    "lastKnownWriteTime" : 1410551909,
+    "path" : "C:/Users/sarahms/Dropbox/Research/Projects/CHI 2015/Glissando Data/Analysis/summarySE.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

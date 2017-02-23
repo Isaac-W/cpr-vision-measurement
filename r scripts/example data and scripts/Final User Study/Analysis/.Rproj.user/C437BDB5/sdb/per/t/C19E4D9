@@ -1,0 +1,22 @@
+{
+    "contents" : "",
+    "created" : 1410480249998.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "C19E4D9",
+    "lastKnownWriteTime" : 29836824280170576,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "caption" : "q2s_sum",
+        "contentUrl" : "content?title=q2s_sum&file=6e61b2d4d5b443e9881bfa550a087461.htm",
+        "displayedObservations" : "12",
+        "displayedVariables" : 7,
+        "totalObservations" : "12",
+        "variables" : "7"
+    },
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

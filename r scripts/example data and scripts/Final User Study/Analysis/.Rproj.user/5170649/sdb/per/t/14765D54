@@ -1,0 +1,22 @@
+{
+    "contents" : "",
+    "created" : 1411147413322.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "14765D54",
+    "lastKnownWriteTime" : 32088490942398465,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "caption" : "qs",
+        "contentUrl" : "content?title=qs&file=4567f5fc88af444ca501b14ad1dcbf9a.htm",
+        "displayedObservations" : 268,
+        "displayedVariables" : 7,
+        "totalObservations" : 268,
+        "variables" : 7
+    },
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

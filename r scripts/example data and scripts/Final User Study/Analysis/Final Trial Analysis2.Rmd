@@ -1,0 +1,357 @@
+---
+title: "Glissando CHI 2015"
+author: "Jaime Ruiz"
+date: "Friday, September 19, 2014"
+output: html_document
+---
+
+Libraries
+------------------
+```{r, results="hide", message=FALSE}
+library(doBy);
+library(ggplot2);
+library(nlme);
+library(car); #needed for ANOVA function
+require(multcomp)
+```
+
+### Functions
+
+```{r, echo=FALSE}
+IsOutlier = function(trialTime, mean, sd){
+  max = mean+sd*3
+  min = mean-sd*3
+	return(trialTime > max | trialTime < min);
+}
+## Summarizes data.
+## Gives count, mean, standard deviation, standard error of the mean, and confidence interval (default 95%).
+## If there are within-subject variables, calculate adjusted values using method from Morey (2008).
+##   data: a data frame.
+##   measurevar: the name of a column that contains the variable to be summariezed
+##   groupvars: a vector containing names of columns that contain grouping variables
+##   na.rm: a boolean that indicates whether to ignore NA's
+##   conf.interval: the percent range of the confidence interval (default is 95%)
+summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE, conf.interval=.95) {
+    require(doBy)
+
+    # New version of length which can handle NA's: if na.rm==T, don't count them
+    length2 <- function (x, na.rm=FALSE) {
+        if (na.rm) sum(!is.na(x))
+        else       length(x)
+    }
+
+    # Collapse the data
+    formula <- as.formula(paste(measurevar, paste(groupvars, collapse=" + "), sep=" ~ "))
+    datac <- summaryBy(formula, data=data, FUN=c(length2,mean,sd), na.rm=na.rm)
+
+    # Rename columns
+    names(datac)[ names(datac) == paste(measurevar, ".mean",    sep="") ] <- measurevar
+    names(datac)[ names(datac) == paste(measurevar, ".sd",      sep="") ] <- "sd"
+    names(datac)[ names(datac) == paste(measurevar, ".length2", sep="") ] <- "N"
+    
+    datac$se <- datac$sd / sqrt(datac$N)  # Calculate standard error of the mean
+    
+    # Confidence interval multiplier for standard error
+    # Calculate t-statistic for confidence interval: 
+    # e.g., if conf.interval is .95, use .975 (above/below), and use df=N-1
+    ciMult <- qt(conf.interval/2 + .5, datac$N-1)
+    datac$ci <- datac$se * ciMult
+    
+    return(datac)
+}
+## Norms the data within specified groups in a data frame; it normalizes each
+## subject (identified by idvar) so that they have the same mean, within each group
+## specified by betweenvars.
+##   data: a data frame.
+##   idvar: the name of a column that identifies each subject (or matched subjects)
+##   measurevar: the name of a column that contains the variable to be summariezed
+##   betweenvars: a vector containing names of columns that are between-subjects variables
+##   na.rm: a boolean that indicates whether to ignore NA's
+normDataWithin <- function(data=NULL, idvar, measurevar, betweenvars=NULL, na.rm=FALSE) {
+    require(doBy)
+    
+    # Measure var on left, idvar + between vars on right of formula.
+    subjMeanFormula <- as.formula(paste(measurevar, paste(c(idvar, betweenvars), collapse=" + "), sep=" ~ "))
+    data.subjMean   <- summaryBy(subjMeanFormula, data=data, keep.names=TRUE, na.rm=na.rm)
+    names(data.subjMean)[names(data.subjMean) == measurevar] <- "subjMean"
+
+    # Put the subject means with original data
+    data <- merge(data, data.subjMean)
+    
+    # Get the normalized data in a new column
+    measureNormedVar <- paste(measurevar, "Normed", sep="")
+    data[,measureNormedVar] <- data[,measurevar] - data[,"subjMean"] + mean(data[,measurevar])
+
+    # Remove this subject mean column
+    data$subjMean <- NULL
+    
+    return(data)
+}
+## Summarizes data, handling within-subjects variables by removing inter-subject variability.
+## It will still work if there are no within-S variables.
+## Gives count, mean, standard deviation, standard error of the mean, and confidence interval (default 95%).
+## If there are within-subject variables, calculate adjusted values using method from Morey (2008).
+##   data: a data frame.
+##   measurevar: the name of a column that contains the variable to be summariezed
+##   betweenvars: a vector containing names of columns that are between-subjects variables
+##   withinvars: a vector containing names of columns that are within-subjects variables
+##   idvar: the name of a column that identifies each subject (or matched subjects)
+##   na.rm: a boolean that indicates whether to ignore NA's
+##   conf.interval: the percent range of the confidence interval (default is 95%)
+summarySEwithin <- function(data=NULL, measurevar, betweenvars=NULL, withinvars=NULL, idvar=NULL, na.rm=FALSE, conf.interval=.95) {
+    # Norm each subject's data    
+    data <- normDataWithin(data, idvar, measurevar, betweenvars, na.rm)
+    
+    # This is the name of the new column
+    measureNormedVar <- paste(measurevar, "Normed", sep="")
+    
+    # Replace the original data column with the normed one
+    data[,measurevar] <- data[,measureNormedVar]
+    
+
+    # Collapse the normed data - now we can treat between and within vars the same
+    datac <- summarySE(data, measurevar, groupvars=c(betweenvars, withinvars), na.rm=na.rm, conf.interval=conf.interval)
+
+
+    # Apply correction from Morey (2008) to the standard error and confidence interval
+    #  Get the product of the number of conditions of within-S variables
+    nWithinGroups    <- prod(sapply(datac[,withinvars, drop=FALSE], FUN=nlevels))
+    correctionFactor <- sqrt( nWithinGroups / (nWithinGroups-1) )
+
+    # Apply the correction factor
+    datac$sd <- datac$sd * correctionFactor
+    datac$se <- datac$se * correctionFactor
+    datac$ci <- datac$ci * correctionFactor
+
+    return(datac)
+}
+
+resize.win <- function(Width=5, Height=3) #default for chi intended use paper
+{
+  # works for windows
+  dev.off(); # dev.new(width=6, height=6)
+  windows(record=TRUE, width=Width, height=Height)
+}
+
+# The palette with grey:
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+# The palette with black:
+cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+brewerPalette = c("#ffeda0", "#f03b20")
+
+IsError = function(value){
+  return(value == 'Correct' & 1)
+}
+```
+
+Read File
+-------------------------
+```{r}
+#summary<- read.csv("D:/Dropbox/Sarah's Dropbox/CHI 2015/Glissando Data/Analysis/SUMMARY_NO.csv")
+#summary<- read.csv("C:/Users/sarahms/Dropbox/Research/MOBILEHCI 2015/Glissando Data/Analysis/SUMMARY_NO.csv)
+summary<-file.choose(new = FALSE)
+names(summary)
+```
+
+Examine Error Rate
+------------------------
+```{r, echo=FALSE}
+#Setup
+summary$IsError = ifelse(summary$Outcome=='Correct', 0, 1)
+
+# 1. Look at error rate
+summaryF <- subset(summary, Trial == "First")
+summaryR <- subset(summary, Trial == "Return")
+```
+
+### First Study Error Rate
+
+#### Means
+```{r}
+summaryF$IsError = ifelse(summaryF$Outcome=='Correct', 0, 1)
+t = summaryBy(IsError~Condition+Participant+Gesture,data=summaryF, FUN = function(x) { c(eRate = sum(x)/5)}) 
+summaryBy(IsError.eRate~Condition, data=t, FUN = function(x) { c(m = mean(x), s = sd(x))})
+
+```
+#### Anova
+```{r}
+fit = aov(IsError.eRate~Condition*Gesture,data=t)
+summary(fit)
+```
+
+### Second Study Error Rate
+
+#### Means
+```{r}
+summaryR$IsError = ifelse(summaryR$Outcome=='Correct', 0, 1)
+t = summaryBy(IsError~Condition+Participant+Gesture,data=summaryR, FUN = function(x) { c(eRate = sum(x)/5)}) 
+summaryBy(IsError.eRate~Condition, data=t, FUN = function(x) { c(m = mean(x), s = sd(x))})
+```
+
+#### Anova
+```{r}
+fit = aov(IsError.eRate~Condition*Gesture,data=t)
+summary(fit)
+TukeyHSD(fit)
+```
+
+Gesture Error
+------------------------
+
+#### Setup
+```{r, echo=FALSE}
+#Filter out errors
+summary <- subset(summary, Outcome == "Correct")
+summaryF <- subset(summary, Trial == "First")
+summaryR <- subset(summary, Trial == "Return")
+
+trialTimes = summaryBy(Difference~Gesture,data=summaryF, FUN = function(x) { c(m = mean(x), s = sd(x))}) 
+summaryF$outlier = trialTimes$Difference.m[match(summaryF$Gesture,trialTimes$Gesture)]
+summaryF$outlier2 = trialTimes$Difference.s[match(summaryF$Gesture,trialTimes$Gesture)]
+
+summaryF$Filter = IsOutlier(summaryF$Difference, summaryF$outlier, summaryF$outlier2);
+numberOfOutliers = nrow(summaryF[which(summaryF$Filter==1),]);
+print("Number of outliers in First Study")
+numberOfOutliers;
+summaryF = summaryF[which(summaryF$Filter==0),]
+
+trialTimes = summaryBy(Difference~Gesture,data=summaryR, FUN = function(x) { c(m = mean(x), s = sd(x))}) 
+summaryR$outlier = trialTimes$Difference.m[match(summaryR$Gesture,trialTimes$Gesture)]
+summaryR$outlier2 = trialTimes$Difference.s[match(summaryR$Gesture,trialTimes$Gesture)]
+
+summaryR$Filter = IsOutlier(summaryR$Difference, summaryR$outlier, summaryR$outlier2);
+numberOfOutliers = nrow(summaryR[which(summaryR$Filter==1),]);
+print("Number of outliers in Return Study")
+numberOfOutliers;
+summaryR = summaryR[which(summaryR$Filter==0),]
+```
+
+### First Study
+
+```{r, echo=FALSE}
+sumsumF <- summaryBy(Difference~Gesture+Participant+Trial+Condition,data=summaryF, keep.names=TRUE)
+trialTimes = summaryBy(Difference~Gesture,data=sumsumF, FUN = function(x) { c(m = mean(x), s = sd(x))}) 
+
+sumsumF$outlier = trialTimes$Difference.m[match(sumsumF$Gesture,trialTimes$Gesture)]
+sumsumF$outlier2 = trialTimes$Difference.s[match(sumsumF$Gesture,trialTimes$Gesture)]
+
+sumsumF$Filter = IsOutlier(sumsumF$Difference, sumsumF$outlier, sumsumF$outlier2);
+numberOfOutliers = nrow(sumsumF[which(sumsumF$Filter==1),]);
+print("Number of OUtliers filtered")
+numberOfOutliers;
+sumsumF = sumsumF[which(sumsumF$Filter==0),]
+sumsumF = sumsumF[which(sumsumF$Participant != 8 & sumsumF$Participant != 10),]
+sumsumF$Difference = sumsumF$Difference/1000000
+```
+
+#### Means
+```{r, echo=FALSE}
+summaryBy(Difference~Gesture+Condition,data=sumsumF, keep.names=TRUE, FUN=c(mean,sd))
+summaryBy(Difference~Condition,data=sumsumF, keep.names=TRUE, FUN=c(mean,sd))
+```
+
+#### Anova
+```{r, echo=FALSE}
+fit = aov(Difference ~ Condition*Gesture, data=sumsumF)
+summary.aov(fit)
+
+```
+
+```{r, echo=FALSE}
+TukeyHSD(fit)
+```
+
+#### Graph
+```{r, echo=FALSE}
+g = ggplot(sumsumF, aes(x=Gesture, y=Difference, fill=Condition)) + 
+  geom_boxplot()+theme_bw()+ scale_fill_manual(values=brewerPalette)+ 
+  theme(legend.position="none") +
+  ylab("Gesture Error (ms)");
+g
+resize.win()
+ggsave("Box_F_no_legend.png", dpi=300)
+```
+
+```{r, echo=FALSE}
+g = ggplot(sumsumF, aes(x=Gesture, y=Difference, fill=Condition)) + geom_boxplot()+theme_bw()+ scale_fill_manual(values=brewerPalette)+ theme(legend.title = element_text( size=10, face="bold"))+
+  ylab("Gesture Error (ms)");
+g
+resize.win()
+ggsave("Box_F_legend.png", dpi=300)
+
+g = ggplot(sumsumF, aes(x=Gesture, y=Difference, fill=Condition)) + geom_boxplot()+theme_bw()+ scale_fill_manual(values=brewerPalette)+ theme(legend.title = element_text( size=10, face="bold"), legend.position="top")+
+  ylab("Gesture Error (ms)");
+g
+resize.win()
+ggsave("Box_F_legend_top.png", dpi=300)
+```
+
+### Return Study
+
+```{r, echo=FALSE}
+sumsumR <- summaryBy(Difference~Gesture+Participant+Trial+Condition,data=summaryR, keep.names=TRUE)
+sumsumR = sumsumR[which(sumsumR$Participant != 36 & sumsumR$Participant != 46 & sumsumR$Participant != 7),]
+
+trialTimes = summaryBy(Difference~Gesture,data=sumsumR, FUN = function(x) { c(m = mean(x), s = sd(x))}) 
+
+sumsumR$outlier = trialTimes$Difference.m[match(sumsumR$Gesture,trialTimes$Gesture)]
+sumsumR$outlier2 = trialTimes$Difference.s[match(sumsumR$Gesture,trialTimes$Gesture)]
+
+sumsumR$Filter = IsOutlier(sumsumR$Difference, sumsumR$outlier, sumsumR$outlier2);
+numberOfOutliers = nrow(sumsumR[which(sumsumR$Filter==1),]);
+print("Number of OUtliers filtered")
+numberOfOutliers;
+
+sumsumR$Difference = sumsumR$Difference/1000000
+sumsumR[which(sumsumR$Condition=="Control"),]$Difference = abs(sumsumR[which(sumsumR$Condition=="Control"),]$Difference)
+#sumsumR$Participant = as.factor(sumsumR$Participant)
+
+#ggplot(sumsumR[which(sumsumR$Condition=="Glissando"),], aes(x=Gesture, y=Difference)) + 
+#  geom_boxplot()+theme_bw()+ scale_fill_manual(values=brewerPalette)+ 
+#  theme(legend.position="none") + facet_grid(Participant~.)
+#  ylab("Gesture Error (ms)");
+```
+
+#### Means
+```{r, echo=FALSE}
+summaryBy(Difference~Gesture+Condition,data=sumsumR, keep.names=TRUE, FUN=c(mean,sd))
+summaryBy(Difference~Condition,data=sumsumR, keep.names=TRUE, FUN=c(mean,sd))
+```
+
+#### Anova
+```{r, echo=FALSE}
+fit = aov(Difference ~ Condition*Gesture, data=sumsumR)
+summary.aov(fit)
+
+```
+
+```{r, echo=FALSE}
+TukeyHSD(fit)
+```
+
+#### Graph
+```{r, echo=FALSE}
+g = ggplot(sumsumR, aes(x=Gesture, y=Difference, fill=Condition)) + 
+  geom_boxplot()+theme_bw()+ scale_fill_manual(values=brewerPalette)+ 
+  theme(legend.position="none") +
+  ylab("Gesture Error (ms)");
+g
+resize.win()
+ggsave("Box_R_no_legend.png", dpi=300)
+```
+
+```{r, echo=FALSE}
+g = ggplot(sumsumR, aes(x=Gesture, y=Difference, fill=Condition)) + geom_boxplot()+theme_bw()+ scale_fill_manual(values=brewerPalette)+ theme(legend.title = element_text( size=10, face="bold"))+
+  ylab("Gesture Error (ms)");
+g
+resize.win()
+ggsave("Box_R_legend.png", dpi=300)
+
+g = ggplot(sumsumR, aes(x=Gesture, y=Difference, fill=Condition)) + geom_boxplot()+theme_bw()+ scale_fill_manual(values=brewerPalette)+ theme(legend.title = element_text( size=10, face="bold"), legend.position="top")+
+  ylab("Gesture Error (ms)");
+g
+resize.win()
+ggsave("Box_R_legend_top.png", dpi=300)
+```
