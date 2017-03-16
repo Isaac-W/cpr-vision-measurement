@@ -44,7 +44,7 @@ def plot_data(data, peaks, troughs):
     x = [x for x in range(0, len(data))]
     y = data
 
-    plt.plot(x, y)
+    #plt.plot(x, y)
 
     if peaks is not None:
         plt.plot(peaks, [data[x] for x in peaks], 'rx')
@@ -52,7 +52,7 @@ def plot_data(data, peaks, troughs):
     if troughs is not None:
         plt.plot(troughs, [data[x] for x in troughs], 'bx')
 
-    plt.show()
+    #plt.show()
 
 
 typemap = {
@@ -142,7 +142,13 @@ class DataLoader(object):
         return get_peaks(negate_data(self.get_raw_data()))
 
     def get_troughs(self):
-        return get_peaks(negate_data(self.get_smoothed_data()))
+        data = self.get_smoothed_data()
+        out_peaks = []
+        peaks = get_peaks(negate_data(data))
+        for peak in peaks:
+            if data[peak] <= -0.45:
+                out_peaks.append(peak)
+        return out_peaks
 
     def get_periods(self, points):
         periods = []

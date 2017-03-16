@@ -3,6 +3,7 @@ import re
 import os
 import dataloader
 from collections import defaultdict
+import matplotlib.pyplot as plt
 
 FILE_PATH = 'D:\\Working\\UF\\CPR\\'
 #FILE_PATH = 'D:\\Working\\UF\\CPR\\fixed'
@@ -19,6 +20,7 @@ for filename in dirs:
 
     fullpath = os.path.join(FILE_PATH, filename)
     loader = dataloader.DataLoader(fullpath)
+    loader.plot()
 
     compressions = loader.get_compressions()
     avg_depth = loader.get_average_depth()
@@ -50,3 +52,5 @@ for filename in dirs:
 
     row = ','.join(map(str, values))
     print row
+
+plt.show()
