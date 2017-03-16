@@ -1,0 +1,23 @@
+Group,PID,Q2,Q3,Q4,Q5,Q6,Q22,Q23,Q8_1,Q8_2,Q9_1,Q9_2,,,,,,,QConfidence_1,QConfidence_2,QRecommend
+,,How old are you?,What is your gender? - Selected Choice,What is your ethnicity?,What is your primary (first) language?,"If your primary (first) language is not English, for how many years have you been speaking English?",Have you ever taken a CPR class before?,"If ""yes,"" when was your last CPR class?",Training Course - I found the training course helpful,Training Course - I did not find the training course helpful,Self-Practice - I found the self-practice helpful,Self-Practice - I did not find the self-practice helpful,,,,,,,Confidence - I feel confident that I could perform CPR in an emergency,Confidence - I do not feel confident that I could perform CPR in an emergency,How likely are you to recommend the training system to a friend?
+3,3,25,Female,White,English,,No,,7.211,0.592,9.127,0,10,0,10,0,1.62,9.648,8.986,0.394,10
+1,4,24,Female,native american,english,,No,,10,0,10,0.085,,,,,,,8.93,0.789,10
+2,5,26,Female,white,Persian,three years,No,,6.521,0,8.634,0,6.366,0.239,8.62,0.394,,,8.479,0,7.944
+3,6,23,Female,White-Middle East,Persian,1,No,,8.239,1.099,8.887,1.183,8.338,1.239,9.423,0.549,5.577,3.451,1.141,8.577,8.789
+1,7,26,Male,Asian,English,,No,,10,0,10,0,,,,,,,10,0,10
+2,8,23,Female,Asian,Hindi,18,No,,10,4.986,10,0,10,0,10,0,,,7.155,5.127,10
+3,9,19,Female,Asian,English,n/a,No,n/a,10,0,10,0,10,0,10,0,10,0,2.169,8.915,8.93
+1,10,31,Male,Asian,Korean,18,Yes,2009,10,0,10,0,,,,,,,10,0,10
+2,12,25,Male,White,English,,Yes,2002,6.479,3.606,7.085,2.366,6.803,2.423,6.225,3.437,,,6.718,2.873,3.211
+3,13,24,Male,White,English,,No,,10,0,10,0,7.789,2.113,9.127,1.07,5.479,4.183,8.676,1.028,9.859
+1,14,23,Female,white,English,n/a,Yes,2010,9.225,0.535,9.127,0.634,,,,,,,7.155,1.507,7.789
+2,15,21,Female,Asian,Chinese ,10,No,,6.366,1.958,7.648,1.338,7.944,1.07,8.592,0.634,,,6.958,2.944,6.211
+1,16,31,Male,Asian,Mandarin,4.5,No,,7.648,0.408,8.69,0.831,,,,,,,6.761,2.465,8.042
+2,17,20,Female,Vietnamese,English,N/A,No,N/A,7.746,1.69,9.62,0.592,10,0.155,7.648,1.239,,,5.873,3.451,9.62
+3,18,22,Female,African-American,English,,Yes,2010,8.887,0.732,10,0,8.831,0.93,9.085,1.423,1.986,8.437,7.746,1.972,6.859
+1,19,24,Female,Black,English,,No,,10,0,8.225,1.028,,,,,,,9.521,0.239,9.169
+2,20,25,Female,latino,english,,Yes,2011,8.155,0.634,10,0,8.986,0.338,9.775,0.155,,,8.38,0.732,8.634
+3,21,23,Female,Asian,Hindi,20,No,,10,0.465,9.873,0,9.732,0,10,0.014,0.014,10,7.901,4.704,9.62
+1,22,26,Female,Indian,English,,No,,10,0,10,0,,,,,,,8.296,0.789,10
+2,23,24,Female,Asian,Chinese,15 years,Yes,6 years ago,9.662,0.408,8.141,1.676,10,0.014,9.958,0.056,,,6.986,2.225,9.662
+3,24,31,Female,White,English,,Yes,Infant/Child CPR 2 yrs ago,7.521,0,10,0,10,0,10,0,7.437,0,7.662,2.577,8.394
