@@ -1,20 +1,21 @@
 #setwd('C:\\Working\\GitHub\\vision-measurement\\data') #Isaac's laptop
 setwd('D:\\Documents\\Courses\\UF Research Methods\\cpr-vision-measurement\\data') #Sarah's work computer
 
-data <- read.csv('all_data.csv')
+#data <- read.csv('all_data.csv')
+data <- read.csv('comprehensive_data.csv')
 databackup <- data
 
 ##Lets look at proportion
-data["NBD_Prop"] <- NA
-data$NBD_Prop <- data$NumBadDepth/data$Total
+#data["NBD_Prop"] <- NA
+#data$NBD_Prop <- data$NumBadDepth/data$Total
 
 g1 <- subset(data, Group == "1")
 g2 <- subset(data, Group == "2")
 g3 <- subset(data, Group == "3")
 
-t1 <- subset(data, Trial == "1")
-t2 <- subset(data, Trial == "2")
-t3 <- subset(data, Trial == "3")
+#t1 <- subset(data, Trial == "1")
+#t2 <- subset(data, Trial == "2")
+#t3 <- subset(data, Trial == "3")
 
 library(doBy)
 
@@ -36,41 +37,39 @@ summaryBy(Correct_Clean ~ Group, data=g1, FUN = function(x) { c(m = mean(x), s =
 
 g2["Correct_Clean"] <- NA
 g2$Correct_Clean <- remove_outliers(g2$Correct)
-summaryBy(Correct_Clean~Group, data=data, FUN = function(x) { c(m = mean(x), s = sd(x))})
+summaryBy(Correct_Clean~Group, data=g2, FUN = function(x) { c(m = mean(x), s = sd(x))})
 
 g3["Correct_Clean"] <- NA
 g3$Correct_Clean <- remove_outliers(g3$Correct)
-summaryBy(Correct_Clean~Group, data=data, FUN = function(x) { c(m = mean(x), s = sd(x))})
-
-t1["Correct_Clean"] <- NA
-t1$Correct_Clean <- remove_outliers(t1$Correct)
-summaryBy(Correct_Clean ~ Group, data=g1, FUN = function(x) { c(m = mean(x), s = sd(x))})
-
-t2["Correct_Clean"] <- NA
-t2$Correct_Clean <- remove_outliers(t2$Correct)
-summaryBy(Correct_Clean~Group, data=data, FUN = function(x) { c(m = mean(x), s = sd(x))})
-
-t3["Correct_Clean"] <- NA
-t3$Correct_Clean <- remove_outliers(t3$Correct)
-summaryBy(Correct_Clean~Group, data=data, FUN = function(x) { c(m = mean(x), s = sd(x))})
+summaryBy(Correct_Clean~Group, data=g3, FUN = function(x) { c(m = mean(x), s = sd(x))})
 
 #Put the three subsets backtogether
 databackup <- data #back your stuff up
 groupdata <- rbind(g1, g2, g3)
-trialdata <- rbind(t1, t2, t3)
 
 #Check out the differences in overall correctness
 summaryBy(Correct~Group, data=groupdata, FUN = function(x) { c(m = mean(x), s = sd(x))})
-boxplot(Correct~Group, data=groupdata)
+boxplot(Correct~Group, data=groupdata) #boxplot
 
-summaryBy(Correct_Clean~Group, data=groupdata, FUN = function(x) { c(m = mean(x), s = sd(x))})
-boxplot(Correct_Clean~Group, data=groupdata)
+summaryBy(Correct_Clean~Group, data=na.omit(groupdata), FUN = function(x) { c(m = mean(x), s = sd(x))})
+boxplot(Correct_Clean~Group, data=groupdata) #Make this a bar chart
+
+#Anova for correctness by group <<<< THIS SHOWS SIGNIFICANT DIFFERENCES
+fit = aov(Correct_Clean~as.factor(Group),data=groupdata)
+summary(fit)
+TukeyHSD(fit)
+#note here that there is no difference between groups 2 and 3
+
+
+
+
+###########################################################################
+######################## STOP HERE !!!!!!!#################################
+###########################################################################
 
 
 #Correctness by trial
-
 summaryBy(Correct_Clean~Group+Trial, data=data, FUN = function(x) { c(m = mean(x), s = sd(x))})
-
 boxplot(Correct_Clean ~ Trial, data=t1)
 boxplot(Correct_Clean ~ Trial, data=t2)
 boxplot(Correct_Clean ~ Trial, data=t3)
@@ -80,13 +79,6 @@ fit = aov(Correct_Clean~as.factor(Group)*as.factor(Trial),data=trialdata)
 summary(fit)
 TukeyHSD(fit)
 #note here that there is no difference by trial
-
-#Anova for correctness by group
-fit = aov(Correct_Clean~as.factor(Group),data=data)
-summary(fit)
-TukeyHSD(fit)
-#note here that there is no difference between groups 2 and 3
-
 
 ###########################################################################
 ####Nothing good below
