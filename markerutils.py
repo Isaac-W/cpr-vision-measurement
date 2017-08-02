@@ -11,6 +11,10 @@ DEPTH_RANGE = (1.95, 5)  # At least 2 in (plus some error in measurement)
 RECOIL_THRESH = 0.3  # Allow for FULL chest recoil
 
 
+# Calibration
+CALIB_SAMPLES = 100
+
+
 # Color ranges
 GREEN_COLOR_MIN = (38, 68, 70)
 GREEN_COLOR_MAX = (80, 183, 255)
@@ -18,6 +22,10 @@ VIOLET_COLOR_MIN = (140, 110, 21)
 VIOLET_COLOR_MAX = (206, 255, 236)
 YELLOW_COLOR_MIN = (10, 110, 96)
 YELLOW_COLOR_MAX = (47, 255, 255)
+
+
+# Automatic color detection variation
+COLOR_VARIANCE = (25, 60, 90)  # +- HSV
 
 
 def ftoi_point(point):

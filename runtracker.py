@@ -81,6 +81,13 @@ def main():
     statussender = StatusSender(SOCK_ADDR, SOCK_PORT)
     datalog = DataLogger(fps if (0 < fps <= 60) else 30, width, height, save_location)
 
+    trainer_on = True
+
+    calibrating = False
+    calib_pos = []
+    calib_color = []
+    cur_position = 0
+
     last_rate, last_depth, last_recoil, last_code = 0, 0, 0, 0
 
     while True:
@@ -116,6 +123,7 @@ def main():
         tracked_marker = tracker.get_marker(frame, output)
         if tracked_marker:
             draw_marker(output, tracked_marker.marker, tracked_marker.size, tracked_marker.distance, tracked_marker.position)
+            cur_position = tracked_marker.y
 
         '''
         Analysis
@@ -130,8 +138,10 @@ def main():
                     last_rate, last_depth, last_recoil, last_code = rate, depth, recoil, code  # Update
                     print 'R: ' + str(last_rate) + ' D: ' + str(last_depth) + ' C: ' + str(last_recoil) + ' S: ' + str(last_code)
 
-                    if not (last_rate == 0 and last_depth == 0 and last_recoil == 0):
-                        statussender.send_status(code)
+                    # Send status if trainer is turned on
+                    if trainer_on:
+                        if not (last_rate == 0 and last_depth == 0 and last_recoil == 0):
+                            statussender.send_status(code)
 
                 datalog.log(frame, output, tracker.get_origin(), tracked_marker.position if tracked_marker else 0, rate, depth, recoil, code)
 
@@ -161,6 +171,12 @@ def main():
             track_finder.set_color(GREEN_COLOR_MIN, GREEN_COLOR_MAX)
         elif k == ord('y'):
             track_finder.set_color(YELLOW_COLOR_MIN, YELLOW_COLOR_MAX)
+        elif k == ord('c'):
+            # Calibrate tracker (color, size, and starting position)
+            tracker.marker_finder.set_color((0, 0, 0), (255, 255, 255))
+        elif k == ord('t'):
+            # Toggle trainer
+            trainer_on = not trainer_on
         elif k == 32:
             # Toggle on/off
             if datalog.is_running():
@@ -171,6 +187,9 @@ def main():
                 time_str = cur_time.strftime('%m-%d-%y_%H%M%S')
                 datalog.start('CPR_' + str(participant_id) + '_' + time_str)
                 cprstatus.reset()
+
+                # Set tracker origin
+                tracker.set_origin(cur_position)
 
     cap.release()
 

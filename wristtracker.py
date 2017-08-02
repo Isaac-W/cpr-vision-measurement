@@ -17,6 +17,7 @@ class WristTracker(object):
         self.F = focal_length
         self.origin_y = origin_y
         self.cur_track = None
+        self.y = 0
 
     def set_origin(self, origin_y):
         self.origin_y = origin_y
@@ -48,8 +49,8 @@ class WristTracker(object):
             D = self.F * self.S / px
 
             # Calculate position
-            y = self.cur_track[1][0][1]
-            pos = (self.origin_y - y) * (self.S / px)
+            self.y = self.cur_track[1][0][1]
+            pos = (self.origin_y - self.y) * (self.S / px)
 
             return TrackedMarker(self.cur_track, px, D, pos)
 
