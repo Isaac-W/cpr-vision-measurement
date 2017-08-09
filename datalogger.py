@@ -7,7 +7,7 @@ TIME_FORMAT = '%m-%d-%y_%H:%M:%S.%f'
 
 
 class DataLogger(object):
-    def __init__(self, fps=30, width=1920, height=1080, save_location='.'):
+    def __init__(self, fps=30, width=1920, height=1080, save_location='.', rec_face=False):
         self.fps = fps
         self.width = int(width)
         self.height = int(height)
@@ -21,6 +21,9 @@ class DataLogger(object):
         self.datafile = None
         self.raw_vid = None
         self.out_vid = None
+
+        self.rec_face = rec_face
+        self.face_vid = None
 
     def is_running(self):
         return self.running
@@ -45,6 +48,9 @@ class DataLogger(object):
             self.raw_vid = cv2.VideoWriter(path.join(self.save_location, filename + '_raw.mp4'), fourcc, self.fps, (self.width, self.height))
             self.out_vid = cv2.VideoWriter(path.join(self.save_location, filename + '.mp4'), fourcc, self.fps, (self.width, self.height))
 
+            if self.rec_face:
+                self.face_vid = cv2.VideoWriter(path.join(self.save_location, filename + '_face.mp4'), fourcc, self.fps, (self.width, self.height))
+
             if self.raw_vid.isOpened() and self.out_vid.isOpened():
                 self.index = 0
                 self.running = True
@@ -60,9 +66,12 @@ class DataLogger(object):
         self.raw_vid.release()
         self.out_vid.release()
 
+        if self.rec_face:
+            self.face_vid.release()
+
         self.running = False
 
-    def log(self, raw, img, origin, position, rate, depth, recoil, status):
+    def log(self, raw, img, origin, position, rate, depth, recoil, status, face=None):
         if not self.running:
             return
 
@@ -79,12 +88,15 @@ class DataLogger(object):
         out_string = '\t'.join(map(str, vals))
         self.datafile.write(out_string + '\n')
 
-        # Resize frames
+        # Output video
         raw = cv2.resize(raw, (self.width, self.height))
-        img = cv2.resize(img, (self.width, self.height))
-
-        # Write videos
         self.raw_vid.write(raw)
+
+        img = cv2.resize(img, (self.width, self.height))
         self.out_vid.write(img)
+
+        if face:
+            face = cv2.resize(face, (self.width, self.height))
+            self.face_vid.write(face)
 
         self.index += 1

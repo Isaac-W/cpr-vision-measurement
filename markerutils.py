@@ -1,3 +1,6 @@
+import cv2
+import numpy as np
+
 PI = 3.141592654
 
 MARKER_SIZE = 0.74
@@ -25,7 +28,9 @@ YELLOW_COLOR_MAX = (47, 255, 255)
 
 
 # Automatic color detection variation
-COLOR_VARIANCE = (25, 60, 90)  # +- HSV
+COLOR_VARIANCE = (20, 100, 100)  # +- HSV
+COLOR_MIN = (10, 60, 60)  # Replace H with runtime determined value
+COLOR_MAX = (10, 255, 255)
 
 
 def ftoi_point(point):
@@ -42,3 +47,7 @@ def ellipse_area(ellipse):
 
 def get_pixel_size(marker):
     return get_ellipse_size(marker[1])
+
+def cvt_bgr2hsv(pixel):
+    hsv_pixel = cv2.cvtColor(np.uint8([[pixel]]), cv2.COLOR_BGR2HSV)
+    return hsv_pixel[0][0][0], hsv_pixel[0][0][1], hsv_pixel[0][0][2]

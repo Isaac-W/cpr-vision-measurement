@@ -3,27 +3,31 @@ from markerutils import *
 
 
 class TrackedMarker(object):
-    def __init__(self, marker, size, distance, position):
+    def __init__(self, marker, size, distance, position, y):
         self.marker = marker
         self.size = size
         self.distance = distance
         self.position = position
+        self.y = y
 
 
 class WristTracker(object):
-    def __init__(self, marker_finder, marker_size, focal_length, origin_y=0):
+    def __init__(self, marker_finder, marker_size, focal_length, origin_y=0, force_px_size=None):
         self.marker_finder = marker_finder
         self.S = marker_size
         self.F = focal_length
         self.origin_y = origin_y
         self.cur_track = None
-        self.y = 0
+        self.force_px_size = force_px_size
 
     def set_origin(self, origin_y):
         self.origin_y = origin_y
 
     def get_origin(self):
         return self.origin_y
+
+    def set_force_px_size(self, size):
+        self.force_px_size = size
 
     def get_marker(self, img, output=None):
         h, w, _ = img.shape
@@ -44,14 +48,19 @@ class WristTracker(object):
 
         # Operate on prev_track (retain last known position if no new marker found)
         if self.cur_track:
-            # Calculate distance
+            # Calculate distance from camera (unused)
             px = get_pixel_size(self.cur_track)
             D = self.F * self.S / px
 
-            # Calculate position
-            self.y = self.cur_track[1][0][1]
-            pos = (self.origin_y - self.y) * (self.S / px)
+            # Check for force size
+            if self.force_px_size:
+                # More stable calculation (assumes no movement perpendicular to camera plane)
+                px = self.force_px_size
 
-            return TrackedMarker(self.cur_track, px, D, pos)
+            # Calculate position
+            y = self.cur_track[1][0][1]
+            pos = (self.origin_y - y) * (self.S / px)
+
+            return TrackedMarker(self.cur_track, px, D, pos, y)
 
         return None

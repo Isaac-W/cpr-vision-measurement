@@ -29,6 +29,9 @@ class MarkerFinder(object):
 
         filt = cv2.morphologyEx(filt, cv2.MORPH_OPEN, kernel, iterations=2)
 
+        # DEBUG: Show filter
+        #cv2.imshow('Filter', filt)
+
         # Find contours
         _, contours, _ = cv2.findContours(filt, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
         if not output is None:

@@ -2,11 +2,15 @@ import sys
 from datetime import datetime
 import markerfinder as mk
 import cv2
+import numpy as np
 from cprstatus import CPRStatus
 from datalogger import DataLogger
 from markerutils import *
 from statussender import StatusSender
 from wristtracker import WristTracker
+
+TRACKER_CAM = 0
+FACE_CAM = None
 
 SOCK_ADDR = 'localhost'
 SOCK_PORT = 5123
@@ -38,8 +42,8 @@ def draw_marker(img, marker, size=None, distance=None, position=None):
 
 
 def main():
-    if len(sys.argv) < 3:
-        print 'USAGE: runtracker.py marker_size participant_id [save_location]'
+    if len(sys.argv) < 2:
+        print 'USAGE: runtracker.py participant_id [save_location]'
         return
 
     S = MARKER_SIZE
@@ -61,11 +65,18 @@ def main():
             tracker.set_origin(y)
 
     # Open webcam
-    cap = cv2.VideoCapture(0)
-
+    cap = cv2.VideoCapture(TRACKER_CAM)
     if not cap.isOpened():
-        print 'Error opening camera!'
+        print 'Error opening tracker camera!'
         return
+
+    # Open facecam (for separate recording)
+    facecap = None
+    if FACE_CAM is not None:
+        facecap = cv2.VideoCapture(FACE_CAM)
+        if not facecap.isOpened():
+            print 'Error opening face camera!'
+            facecap = None
 
     # Get video parameters (try to retain same attributes for output video)
     width = float(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -79,14 +90,12 @@ def main():
 
     cprstatus = CPRStatus(CPR_BUFFER_SIZE)
     statussender = StatusSender(SOCK_ADDR, SOCK_PORT)
-    datalog = DataLogger(fps if (0 < fps <= 60) else 30, width, height, save_location)
+    datalog = DataLogger(fps if (0 < fps <= 60) else 30, width, height, save_location, facecap is not None)
 
     trainer_on = True
 
-    calibrating = False
-    calib_pos = []
-    calib_color = []
     cur_position = 0
+    cur_size = 0
 
     last_rate, last_depth, last_recoil, last_code = 0, 0, 0, 0
 
@@ -95,6 +104,10 @@ def main():
         ret, frame = cap.read()
         if ret is False or frame is None:
             break
+
+        faceframe = None
+        if facecap:
+            faceret, faceframe = facecap.read()
 
         # Get dimensions
         h, w, _ = frame.shape
@@ -113,7 +126,11 @@ def main():
 
         # Draw center and origin lines
         cv2.line(output, (center[0], 0), (center[0], h), (0, 0, 255), 1)
-        cv2.line(output, (center[0] - 20, tracker.get_origin()), (center[0] + 20, tracker.get_origin()), (0, 0, 255), 1)
+        cv2.line(output, (center[0] - 20, int(tracker.get_origin())), (center[0] + 20, int(tracker.get_origin())), (0, 0, 255), 1)
+
+        # Draw instructions
+        if not datalog.is_running():
+            cv2.putText(output, 'c - set clr at orig | t - trainer is ' + ('on' if trainer_on else 'off') + ' | space - tgl tracker', (0, h - 4), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 1)
 
         '''
         Tracking
@@ -123,7 +140,10 @@ def main():
         tracked_marker = tracker.get_marker(frame, output)
         if tracked_marker:
             draw_marker(output, tracked_marker.marker, tracked_marker.size, tracked_marker.distance, tracked_marker.position)
+
+            # Update cur position/size (for calibration)
             cur_position = tracked_marker.y
+            cur_size = tracked_marker.size
 
         '''
         Analysis
@@ -143,7 +163,7 @@ def main():
                         if not (last_rate == 0 and last_depth == 0 and last_recoil == 0):
                             statussender.send_status(code)
 
-                datalog.log(frame, output, tracker.get_origin(), tracked_marker.position if tracked_marker else 0, rate, depth, recoil, code)
+                datalog.log(frame, output, tracker.get_origin(), tracked_marker.position if tracked_marker else 0, rate, depth, recoil, code, faceframe)
 
         '''
         Show Output
@@ -156,6 +176,9 @@ def main():
         #cv2.imshow('Frame', frame)
         cv2.imshow('Output', output)
         cv2.setMouseCallback('Output', mouse_callback)
+
+        if faceframe:
+            cv2.imshow('Face', faceframe)
 
         '''
         Process Keypresses
@@ -172,8 +195,25 @@ def main():
         elif k == ord('y'):
             track_finder.set_color(YELLOW_COLOR_MIN, YELLOW_COLOR_MAX)
         elif k == ord('c'):
-            # Calibrate tracker (color, size, and starting position)
-            tracker.marker_finder.set_color((0, 0, 0), (255, 255, 255))
+            # Calibrate tracker (color)
+            color = (0, 0, 0)
+
+            # Get origin pixel color
+            pixel = frame[int(tracker.get_origin())][center[0]]
+            hsv = cvt_bgr2hsv(pixel)
+            print 'Calibrate color: ' + str(hsv) + ' | BGR: ' + str(pixel)
+
+            # Apply HSV range
+            '''
+            lower_bound = tuple(map(lambda x, y: max(0, x - y), hsv, COLOR_VARIANCE))
+            upper_bound = tuple(map(lambda x, y: min(255, x + y), hsv, COLOR_VARIANCE))
+            '''
+            lower_bound = (max(0, hsv[0] - COLOR_MIN[0]), COLOR_MIN[1], COLOR_MIN[2])
+            upper_bound = (min(255, hsv[0] + COLOR_MAX[0]), COLOR_MAX[1], COLOR_MAX[2])
+            #'''
+
+            track_finder.set_color(lower_bound, upper_bound)
+            print 'Color range: ' + str(lower_bound) + ' to ' + str(upper_bound)
         elif k == ord('t'):
             # Toggle trainer
             trainer_on = not trainer_on
@@ -188,8 +228,9 @@ def main():
                 datalog.start('CPR_' + str(participant_id) + '_' + time_str)
                 cprstatus.reset()
 
-                # Set tracker origin
+                # Set tracker origin/size
                 tracker.set_origin(cur_position)
+                tracker.set_force_px_size(cur_size)
 
     cap.release()
 
