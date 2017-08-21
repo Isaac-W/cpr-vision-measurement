@@ -9,8 +9,8 @@ from markerutils import *
 from statussender import StatusSender
 from wristtracker import WristTracker
 
-TRACKER_CAM = 0
-FACE_CAM = None
+TRACKER_CAM =1
+FACE_CAM = 0
 
 SOCK_ADDR = 'localhost'
 SOCK_PORT = 5123
@@ -161,6 +161,7 @@ def main():
                     # Send status if trainer is turned on
                     if trainer_on:
                         if not (last_rate == 0 and last_depth == 0 and last_recoil == 0):
+                            print 'send status ' + str(code)
                             statussender.send_status(code)
 
                 datalog.log(frame, output, tracker.get_origin(), tracked_marker.position if tracked_marker else 0, rate, depth, recoil, code, faceframe)
@@ -177,7 +178,7 @@ def main():
         cv2.imshow('Output', output)
         cv2.setMouseCallback('Output', mouse_callback)
 
-        if faceframe:
+        if faceframe is not None:
             cv2.imshow('Face', faceframe)
 
         '''

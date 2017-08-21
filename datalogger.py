@@ -95,7 +95,7 @@ class DataLogger(object):
         img = cv2.resize(img, (self.width, self.height))
         self.out_vid.write(img)
 
-        if face:
+        if face is not None:
             face = cv2.resize(face, (self.width, self.height))
             self.face_vid.write(face)
 
