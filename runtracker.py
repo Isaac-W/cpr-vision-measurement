@@ -9,8 +9,8 @@ from markerutils import *
 from statussender import StatusSender
 from wristtracker import WristTracker
 
-TRACKER_CAM =1
-FACE_CAM = 0
+TRACKER_CAM =0
+FACE_CAM = 1
 
 SOCK_ADDR = 'localhost'
 SOCK_PORT = 5123
@@ -51,7 +51,7 @@ def main():
 
     participant_id = sys.argv[1]
 
-    save_location = '.'
+    save_location = DATA_DIR
     if len(sys.argv) >= 3:
         save_location = sys.argv[2]
 

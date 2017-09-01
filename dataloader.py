@@ -58,7 +58,7 @@ def plot_data(data, peaks, troughs):
 typemap = {
     'Index': int_parse,
     'Time': time_parse,
-    'Origin': int_parse,
+    'Origin': float_parse,
     'Position': float_parse,
     'Rate': float_parse,
     'Depth': float_parse,
